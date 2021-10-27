@@ -1,0 +1,12 @@
+server.port=8081
+
+spring.datasource.url= jdbc:mysql://localhost:3306/bank-branch-management
+spring.datasource.username= root
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto= update
+spring.jpa.database-platform = org.hibernate.dialect.MySQL5InnoDBDialect
+spring.jpa.show-sql=true
+
+spring.security.user.name= admin
+spring.security.user.password= admin1793
+
