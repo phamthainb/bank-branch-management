@@ -1,4 +1,4 @@
-package com.ptit.backend.entitie;
+package com.ptit.backend.entity;
 
 
 import lombok.AllArgsConstructor;

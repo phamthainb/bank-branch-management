@@ -1,4 +1,4 @@
-package com.ptit.backend.entitie;
+package com.ptit.backend.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,12 +9,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Builder
+@Entity
+@Table(name = "customers")
 @NoArgsConstructor
-@AllArgsConstructor
 @Data
-public class UserEntity extends BaseEntity {
-
+public class CustomerEntity extends BaseEntity{
     @Column(name = "name")
     private String name;
 
@@ -27,10 +26,9 @@ public class UserEntity extends BaseEntity {
     @Column(name = "birthday")
     private String birthday;
 
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "username", unique = true)
     private String username;
 
     @Column(name = "password")
     private String password;
-
 }

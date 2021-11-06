@@ -1,4 +1,4 @@
-package com.ptit.backend.entitie;
+package com.ptit.backend.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,17 +9,19 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "accounts")
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class AccountEntity extends UserEntity{
+public class AccountEntity extends BaseEntity{
 
     @Column(name = "code")
     private String code;
 
     @ManyToOne
-    @JoinColumn(name = "id_user")
-    private CustomerEntity customer;
+    @JoinColumn(name = "id_staff")
+    private StaffEntity staff;
 
+    @ManyToOne
+    @JoinColumn(name = "id_customer")
+    private CustomerEntity customer;
 }
