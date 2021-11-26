@@ -14,6 +14,10 @@ public class StaffEntity extends BaseEntity{
     @JoinColumn(name = "id_admin")
     private AdminEntity admin;
 
+    @OneToOne
+    @JoinColumn(name = "id_user")
+    private UserEntity user;
+
     @Column(name = "name")
     private String name;
 
@@ -25,12 +29,6 @@ public class StaffEntity extends BaseEntity{
 
     @Column(name = "birthday")
     private String birthday;
-
-    @Column(name = "username", unique = true)
-    private String username;
-
-    @Column(name = "password")
-    private String password;
 
     @Column(name = "rate")
     private String rate;

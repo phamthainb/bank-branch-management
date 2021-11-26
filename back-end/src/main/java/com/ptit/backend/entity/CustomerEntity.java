@@ -5,9 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "customers")
@@ -26,9 +24,7 @@ public class CustomerEntity extends BaseEntity{
     @Column(name = "birthday")
     private String birthday;
 
-    @Column(name = "username", unique = true)
-    private String username;
-
-    @Column(name = "password")
-    private String password;
+    @OneToOne
+    @JoinColumn(name = "id_user")
+    private UserEntity user;
 }

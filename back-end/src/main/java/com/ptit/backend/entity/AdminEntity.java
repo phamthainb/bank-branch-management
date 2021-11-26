@@ -3,9 +3,7 @@ package com.ptit.backend.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "admins")
@@ -25,9 +23,7 @@ public class AdminEntity extends BaseEntity {
     @Column(name = "birthday")
     private String birthday;
 
-    @Column(name = "username", unique = true)
-    private String username;
-
-    @Column(name = "password")
-    private String password;
+    @OneToOne
+    @JoinColumn(name = "id_user")
+    private UserEntity user;
 }
