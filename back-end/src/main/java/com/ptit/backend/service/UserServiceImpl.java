@@ -24,7 +24,9 @@ public class UserServiceImpl implements UserService {
         if (user == null)
             throw new UsernameNotFoundException("Không tìm thấy tài khoản : " + username);
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().toString()));
+        if (user.getRole() != null){
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
+        }
         return new MyUserDetails(user.getUsername(), user.getPassword(), true, true,
                 true, true , authorities, user);
     }

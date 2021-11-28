@@ -10,11 +10,11 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class StaffEntity extends BaseEntity{
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_admin")
     private AdminEntity admin;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user")
     private UserEntity user;
 

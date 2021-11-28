@@ -3,11 +3,9 @@ package com.ptit.backend.utils;
 import com.ptit.backend.config.Constants;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.function.Function;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -26,6 +24,7 @@ public class JwtUtils {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
+
     private static Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(Constants.JWT_SECRET).parseClaimsJws(token).getBody();
     }
@@ -36,7 +35,7 @@ public class JwtUtils {
 
     public static String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        return Constants.JWT_TOKEN_PREFIX + createToken(claims, userDetails.getUsername());
+        return createToken(claims, userDetails.getUsername());
     }
 
     private static String createToken(Map<String, Object> claims, String subject) {
@@ -50,5 +49,4 @@ public class JwtUtils {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
-
 }

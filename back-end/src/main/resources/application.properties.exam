@@ -9,4 +9,4 @@ spring.jpa.show-sql=true
 
 spring.security.user.name= admin
 spring.security.user.password= admin1793
-
+# admin/12345678

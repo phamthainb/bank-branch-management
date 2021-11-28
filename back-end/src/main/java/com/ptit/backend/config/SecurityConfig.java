@@ -58,11 +58,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-//                .antMatchers("/api/**").hasAnyRole("ADMIN", "STAFF", "CUSTOMER")
-//                .antMatchers("/*/staff/**").hasAnyRole("STAFF", "ADMIN")
-//                .antMatchers("/*/customer/**").hasAnyRole("CUSTOMER", "ADMIN")
-                .antMatchers("/**").permitAll();
-
+                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/**").hasAnyRole("ADMIN", "STAFF", "CUSTOMER")
+                .antMatchers("/**").permitAll()
+        ;
     }
 
     @Bean

@@ -6,6 +6,5 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface UserService extends UserDetailsService {
     public UserEntity create(UserEntity user);
     public UserEntity update(UserEntity user);
-
     public UserEntity findUser(String username);
 }
