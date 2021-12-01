@@ -38,4 +38,7 @@ public class StaffEntity extends BaseEntity{
 
     @Column(name = "position")
     private String position;
+
+    @Column(name = "status")
+    private boolean status;
 }

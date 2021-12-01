@@ -27,4 +27,7 @@ public class CustomerEntity extends BaseEntity{
     @OneToOne
     @JoinColumn(name = "id_user")
     private UserEntity user;
+
+    @Column(name = "status")
+    private boolean status;
 }

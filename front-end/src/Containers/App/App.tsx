@@ -5,49 +5,21 @@ import {
   LaptopOutlined,
   NotificationOutlined,
 } from "@ant-design/icons";
-import { Table } from "antd";
-
+import BankOutlined from "@ant-design/icons/lib/icons/BankOutlined";
+import Home from "../Home";
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
-
-const dataSource = [
-  {
-    key: "1",
-    name: "Mike",
-    age: 32,
-    address: "10 Downing Street",
-  },
-  {
-    key: "2",
-    name: "John",
-    age: 42,
-    address: "10 Downing Street",
-  },
-];
-
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
-  },
-  {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
-  },
-];
 
 function App() {
   return (
     <Layout>
       <Header className="header">
-        <div className="logo" />
+        <div className="logo">
+          <BankOutlined style={{ color: "cadetblue", fontSize: "20px" }} />
+          <span style={{ color: "cadetblue", fontSize: "15px" }}> Banking</span>
+        </div>
+        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
+        </Menu>
       </Header>
       <Layout>
         <Sider width={200} className="site-layout-background">
@@ -63,12 +35,14 @@ function App() {
               <Menu.Item key="3">option3</Menu.Item>
               <Menu.Item key="4">option4</Menu.Item>
             </SubMenu>
+
             <SubMenu key="sub2" icon={<LaptopOutlined />} title="Staff">
               <Menu.Item key="5">option5</Menu.Item>
               <Menu.Item key="6">option6</Menu.Item>
               <Menu.Item key="7">option7</Menu.Item>
               <Menu.Item key="8">option8</Menu.Item>
             </SubMenu>
+
             <SubMenu
               key="sub3"
               icon={<NotificationOutlined />}
@@ -95,7 +69,7 @@ function App() {
               minHeight: 1000,
             }}
           >
-            <Table dataSource={dataSource} columns={columns} />;
+            <Home />
           </Content>
         </Layout>
       </Layout>
