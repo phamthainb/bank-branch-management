@@ -24,7 +24,14 @@ public class CustomerEntity extends BaseEntity{
     @Column(name = "birthday")
     private String birthday;
 
-    @OneToOne
+    @Column(name = "status")
+    private Boolean status;
+
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user")
     private UserEntity user;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_staff")
+    private StaffEntity staff;
 }
