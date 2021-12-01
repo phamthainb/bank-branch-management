@@ -35,9 +35,10 @@ public class AuthController {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         }
         catch (Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             return ResponseObject.builder().message("Thông tin tài khoản không chính xác.").status(HttpStatus.OK).build();
         }
+
         MyUserDetails myUserDetails = (MyUserDetails) userService.loadUserByUsername(request.getUsername());
         String jwt = JwtUtils.generateToken(myUserDetails);
 
