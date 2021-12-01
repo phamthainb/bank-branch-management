@@ -16,6 +16,9 @@ public class AccountEntity extends BaseEntity{
     @Column(name = "code")
     private String code; // auto gen
 
+    @Column(name="balance")
+    private float balance;
+
     @ManyToOne
     @JoinColumn(name = "id_staff")
     private StaffEntity staff;

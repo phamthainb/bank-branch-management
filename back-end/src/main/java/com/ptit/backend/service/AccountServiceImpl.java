@@ -2,10 +2,7 @@ package com.ptit.backend.service;
 
 import com.ptit.backend.dto.CreateAccountDto;
 import com.ptit.backend.dto.MyUserDetails;
-import com.ptit.backend.entity.AccountEntity;
-import com.ptit.backend.entity.AccountPackageEntity;
-import com.ptit.backend.entity.CustomerEntity;
-import com.ptit.backend.entity.StaffEntity;
+import com.ptit.backend.entity.*;
 import com.ptit.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +19,9 @@ public class AccountServiceImpl implements AccountService {
     StaffRepository staffRepository;
 
     @Autowired
+    StaffService staffService;
+
+    @Autowired
     AccountRepository accountRepository;
 
     @Autowired
@@ -35,15 +35,16 @@ public class AccountServiceImpl implements AccountService {
         AccountPackageEntity accountPackage = accountPackageRepository.findById(data.getId_package()).orElse(null);
         // get staff
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        StaffEntity staffEntity = staffRepository.findById(myUserDetails.getUser().getId()).orElse(null);
+        UserEntity user = myUserDetails.getUser();
 
-        if(customer != null && accountPackage != null && staffEntity != null){
+        if(customer != null && accountPackage != null && user != null){
+            StaffEntity staffEntity = staffService.findByUsername(user.getUsername());
 
             AccountEntity accountEntity = new AccountEntity();
             accountEntity.setAccountPackageEntity(accountPackage);
             accountEntity.setCustomer(customer);
             accountEntity.setStaff(staffEntity);
-            // gen code account
+            // set code
             accountEntity.setCode(data.getCode());
 
           return accountRepository.save(accountEntity);
