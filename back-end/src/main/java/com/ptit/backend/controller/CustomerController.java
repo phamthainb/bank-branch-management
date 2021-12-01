@@ -9,10 +9,12 @@ import com.ptit.backend.entity.StaffEntity;
 import com.ptit.backend.entity.UserEntity;
 import com.ptit.backend.repository.StaffRepository;
 import com.ptit.backend.service.CustomerService;
+import com.ptit.backend.service.StaffService;
 import com.ptit.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,8 +33,15 @@ public class CustomerController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    StaffService staffService;
+
     @PostMapping(value = "")
     public ResponseObject createCustomer(@RequestBody CreateCustomerDto createCustomerDto){
+
         // validate
         UserEntity oldStaff = userService.findUser(createCustomerDto.getUsername());
         if(oldStaff != null){
@@ -50,19 +59,20 @@ public class CustomerController {
         customerEntity.setStatus(createCustomerDto.getStatus());
 
         UserEntity user = myUserDetails.getUser();
-        StaffEntity staffEntity = staffRepository.findById(user.getId()).orElse(null);
+        UserEntity userEntityStaff = userService.findUser(user.getUsername());
 
-        if(staffEntity != null){
+        if(userEntityStaff != null){
+            StaffEntity staffEntity = staffService.findByUsername(userEntityStaff.getUsername());
             customerEntity.setStaff(staffEntity);
             UserEntity userEntity = new UserEntity();
             userEntity.setUsername(createCustomerDto.getUsername());
-            userEntity.setPassword(createCustomerDto.getPassword());
+            userEntity.setPassword(bCryptPasswordEncoder.encode(createCustomerDto.getPassword()));
             userEntity.setRole(UserEntity.Roles.CUSTOMER);
 
             customerEntity.setUser(userEntity);
             CustomerEntity newCustomer = customerService.createCustomer(customerEntity);
             if(newCustomer != null){
-                return ResponseObject.builder().status(HttpStatus.CREATED).message("Tạo nhân viên thành công.").data(newCustomer).build();
+                return ResponseObject.builder().status(HttpStatus.CREATED).message("Tạo Khách hàng thành công.").data(newCustomer).build();
             }
         }
 

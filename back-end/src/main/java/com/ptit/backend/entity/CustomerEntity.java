@@ -27,11 +27,11 @@ public class CustomerEntity extends BaseEntity{
     @Column(name = "status")
     private Boolean status;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user")
     private UserEntity user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_staff")
     private StaffEntity staff;
 }
