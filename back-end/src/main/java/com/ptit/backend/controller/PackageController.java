@@ -1,8 +1,8 @@
 package com.ptit.backend.controller;
 
-import com.ptit.backend.entity.AccountPackageEntity;
+import com.ptit.backend.entity.PackageEntity;
 import com.ptit.backend.utils.ResponseObject;
-import com.ptit.backend.service.AccountPackageService;
+import com.ptit.backend.service.PackageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,18 +10,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/account_package")
-public class AccountPackageController {
+@RequestMapping("/api/package")
+public class PackageController {
     @Autowired
-    AccountPackageService accountPackageService;
+    PackageService packageService;
 
     @PostMapping(name = "")
-    public ResponseObject create(@RequestBody AccountPackageEntity accountPackageEntity){
+    public ResponseObject create(@RequestBody PackageEntity packageEntity){
         //System.out.println(accountPackageEntity.toString());
-        if(accountPackageEntity.getType().equals(AccountPackageEntity.typePackage.payment) ||
-                accountPackageEntity.getType().equals(AccountPackageEntity.typePackage.saving)){
+        if(packageEntity.getType().equals(PackageEntity.typePackage.payment) ||
+                packageEntity.getType().equals(PackageEntity.typePackage.saving)){
 
-            AccountPackageEntity a = accountPackageService.create(accountPackageEntity);
+            PackageEntity a = packageService.create(packageEntity);
             if(a != null){
                 return ResponseObject.builder().status(HttpStatus.OK).message("Tạo thành công.").data(a).build();
             }
@@ -31,7 +31,7 @@ public class AccountPackageController {
 
     @GetMapping(name = "")
     public ResponseObject get(){
-        List<AccountPackageEntity> list = accountPackageService.findAll();
+        List<PackageEntity> list = packageService.findAll();
         return ResponseObject.builder().status(HttpStatus.OK).message("").data(list).build();
     }
 }

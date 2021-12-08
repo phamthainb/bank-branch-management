@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +32,7 @@ public class AuthController {
     public ResponseObject login(@RequestBody LoginDto request) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseObject.builder().message("Thông tin tài khoản không chính xác.").status(HttpStatus.OK).build();
         }
@@ -46,14 +46,14 @@ public class AuthController {
     @PostMapping(value = "/register")
     public ResponseObject signup(@RequestBody SignupDto signup) {
         // check mapping pass
-        if(!signup.getPassword1().equals(signup.getPassword2())){
+        if (!signup.getPassword1().equals(signup.getPassword2())) {
             return ResponseObject.builder().message("Mật khẩu không khớp.").status(HttpStatus.NOT_IMPLEMENTED).build();
         }
 
         // check username exist
         UserEntity checkExist = userService.findUser(signup.getUsername());
 
-        if(checkExist != null){
+        if (checkExist != null) {
             return ResponseObject.builder().message("Username đã tồn tại.").status(HttpStatus.CONFLICT).build();
         }
         // check roles type
@@ -68,10 +68,23 @@ public class AuthController {
 
         UserEntity res = userService.create(newUser);
 
-        if(res.getId() != null){
+        if (res.getId() != null) {
             return ResponseObject.builder().message("Đăng ký tài khoản thành công.").status(HttpStatus.OK).build();
         }
 
         return ResponseObject.builder().message("Có lỗi xảy ra.").status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @GetMapping(value = "/profile")
+    public ResponseObject getProfile() {
+        try {
+            MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            UserEntity user = myUserDetails.getUser();
+            return ResponseObject.builder().status(HttpStatus.OK).message("Thành công.").data(userService.getProfile(user)).build();
+
+        } catch (Exception exception) {
+
+        }
+        return ResponseObject.builder().status(HttpStatus.BAD_REQUEST).message("Thất bại.").build();
     }
 }

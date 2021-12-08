@@ -4,4 +4,5 @@ import com.ptit.backend.entity.CustomerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> {
+    public CustomerEntity findCustomerEntityByUser_Id(Long id);
 }

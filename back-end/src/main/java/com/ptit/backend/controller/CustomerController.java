@@ -2,7 +2,6 @@ package com.ptit.backend.controller;
 
 import com.ptit.backend.dto.CreateCustomerDto;
 import com.ptit.backend.dto.MyUserDetails;
-import com.ptit.backend.entity.AccountPackageEntity;
 import com.ptit.backend.entity.CustomerEntity;
 import com.ptit.backend.utils.ResponseObject;
 import com.ptit.backend.entity.StaffEntity;
@@ -12,9 +11,6 @@ import com.ptit.backend.service.CustomerService;
 import com.ptit.backend.service.StaffService;
 import com.ptit.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;

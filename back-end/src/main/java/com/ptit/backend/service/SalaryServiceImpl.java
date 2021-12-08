@@ -32,7 +32,7 @@ public class SalaryServiceImpl implements SalaryService{
         SalaryEntity salary = new SalaryEntity();
         salary.setAmount((float) (amount*0.02));
         salary.setStaff(s);
-        salary.setNote("Nhận được 2%.");
+        salary.setNote("Khách hàng gửi tiền tiết kiệm lần đầu.");
         salary.setAccount(a);
 
         SalaryEntity salaryNew = salaryRepository.save(salary);

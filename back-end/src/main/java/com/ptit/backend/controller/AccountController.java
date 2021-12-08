@@ -1,7 +1,6 @@
 package com.ptit.backend.controller;
 
-import com.ptit.backend.dto.CreateAccountDto;
-import com.ptit.backend.dto.RechargeDto;
+import com.ptit.backend.dto.*;
 import com.ptit.backend.entity.AccountEntity;
 import com.ptit.backend.utils.ResponseObject;
 import com.ptit.backend.entity.StaffEntity;
@@ -35,21 +34,37 @@ public class AccountController {
 
     @PostMapping(value = "/recharge")
     public ResponseObject recharge(@RequestBody RechargeDto data){
-        Long id = data.getAccount().getId();
-        AccountEntity account = accountService.findOne(id);
-
-        if(account != null){
-            float n = account.getBalance() + data.getAmount();
-            account.setBalance(n);
-            accountService.update(account);
+        boolean res = accountService.recharge(data);
+        if(res){
             return ResponseObject.builder().status(HttpStatus.OK).message("Nạp tiền thành công.").build();
         }
-        return ResponseObject.builder().status(HttpStatus.NOT_IMPLEMENTED).message("Thất bại.").build();
+        return ResponseObject.builder().status(HttpStatus.NOT_IMPLEMENTED).message("Nạp tiền thất bại.").build();
+    }
+
+    @PostMapping(value = "/register-package")
+    public ResponseObject registerPackage(@RequestBody RegisterPackageDto data){
+        boolean res = accountService.registerPackage(data);
+        if(res){
+            return ResponseObject.builder().status(HttpStatus.OK).message("Gửi tiết kiệm thành công.").build();
+        }
+        return ResponseObject.builder().status(HttpStatus.NOT_IMPLEMENTED).message("Gửi tiết kiệm thất bại.").build();
+    }
+
+    @PostMapping(value = "/recharge-package")
+    public ResponseObject rechargePackge(@RequestBody RechargePackageDto data){
+        boolean res = accountService.rechargePackage(data);
+        if(res){
+            return ResponseObject.builder().status(HttpStatus.OK).message("Nạp tiết kiệm thành công.").build();
+        }
+        return ResponseObject.builder().status(HttpStatus.NOT_IMPLEMENTED).message("Nạp tiền thất bại.").build();
     }
 
     @PostMapping(value = "/pay")
-    public ResponseObject pay(){
-
-        return ResponseObject.builder().status(HttpStatus.NOT_IMPLEMENTED).message("Thất bại.").build();
+    public ResponseObject pay(@RequestBody PayDto data){
+        boolean res = accountService.pay(data);
+        if(res){
+            return ResponseObject.builder().status(HttpStatus.OK).message("Chuyển tiền thành công.").build();
+        }
+        return ResponseObject.builder().status(HttpStatus.NOT_IMPLEMENTED).message("Chuyển tiền thất bại.").build();
     }
 }

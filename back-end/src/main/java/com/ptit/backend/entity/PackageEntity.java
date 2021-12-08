@@ -9,11 +9,11 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "account_package")
+@Table(name = "packages")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class AccountPackageEntity extends BaseEntity {
+public class PackageEntity extends BaseEntity {
 
     public final class typePackage {
         public static final String saving = "saving";
