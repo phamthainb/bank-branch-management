@@ -4,6 +4,7 @@ import com.ptit.backend.entity.CustomerEntity;
 import com.ptit.backend.entity.StaffEntity;
 import com.ptit.backend.repository.CustomerRepository;
 import com.ptit.backend.repository.StaffRepository;
+import com.ptit.backend.utils.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,19 +41,19 @@ public class CustomerServiceImpl implements CustomerService{
     public CustomerEntity getCustomerById(long id) {
         CustomerEntity customer = customerRepository.findById(id).orElse(null);
         if (customer == null) {
-            throw ApiException.builder()
-                    .message("Nurse with id = " + id + " not found!")
-                    .httpStatus(HttpStatus.NOT_FOUND);
+            throw ApiResponse.builder()
+                    .message("Khách hàng không tồn tại!")
+                    .status(HttpStatus.NOT_FOUND).build();
         }
         return customer;
     }
 
+//    @Override
+//    public Page<CustomerEntity> getCustomerList(Pageable pageable) {
+//        return null;
+//    }
     @Override
-    public Page<CustomerEntity> getCustomerList(Pageable pageable) {
-        return null;
-    }
-    @Override
-    public List<CustomerEntity> getCustomerCreatedByStaff(String idStaff) {
-        return null;
+    public List<CustomerEntity> getCustomerList() {
+        return customerRepository.findAll();
     }
 }

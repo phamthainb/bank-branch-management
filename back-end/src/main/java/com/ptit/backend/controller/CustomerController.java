@@ -2,6 +2,7 @@ package com.ptit.backend.controller;
 
 import com.ptit.backend.dto.CreateCustomerDto;
 import com.ptit.backend.dto.MyUserDetails;
+import com.ptit.backend.entity.AccountPackageEntity;
 import com.ptit.backend.entity.CustomerEntity;
 import com.ptit.backend.utils.ResponseObject;
 import com.ptit.backend.entity.StaffEntity;
@@ -19,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/customer")
@@ -81,10 +84,15 @@ public class CustomerController {
 
     }
 
-    @GetMapping(params = {"page", "size"})
-    public ResponseEntity<Page<CustomerEntity>> getCustomerList(@RequestParam int page, @RequestParam int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(customerService.getCustomerList(pageable));
+    @GetMapping(value = "/list")
+//    public ResponseEntity<Page<CustomerEntity>> getCustomerList(@RequestParam int page, @RequestParam int size) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        return ResponseEntity.ok(customerService.getCustomerList());
+//    }
+//    @GetMapping(name = "")
+    public ResponseObject getCustomerList(){
+        List<CustomerEntity> list = customerService.getCustomerList();
+        return ResponseObject.builder().status(HttpStatus.OK).message("Lấy danh sách khách hàng thành công").data(list).build();
     }
 
     @PutMapping(params = "id")
@@ -93,7 +101,9 @@ public class CustomerController {
     }
 
     @GetMapping(params = "id")
-    public ResponseEntity<CustomerEntity> getCustomer(@RequestParam Long id) {
-        return ResponseEntity.ok(customerService.findById(id));
+    public ResponseObject getCustomer(@RequestParam Long id) {
+//        return ResponseEntity.ok(customerService.getCustomerById(id));
+        return ResponseObject.builder().status(HttpStatus.OK).message("Lấy thông tin Khách hàng thành công.").data(customerService.getCustomerById(id)).build();
     }
+
 }

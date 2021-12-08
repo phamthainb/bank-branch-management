@@ -13,6 +13,5 @@ public interface CustomerService {
     public CustomerEntity updateCustomer(CustomerEntity user);
     public CustomerEntity getCustomer(String username);
     public CustomerEntity getCustomerById(long id);
-    public Page<CustomerEntity> getCustomerList(Pageable pageable);
-    public List<CustomerEntity> getCustomerCreatedByStaff(String idStaff);
+    public List<CustomerEntity> getCustomerList();
 }
