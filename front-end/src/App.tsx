@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Call from "./containers/Call";
+import Bank from "./containers/Bank";
 import Login from "./containers/Login";
 import Signup from "./containers/Signup";
 import Onboarding from "./containers/Onboarding";
@@ -9,9 +9,10 @@ import MyProvider from "./common/context";
 
 import "./app.css";
 import "antd/dist/antd.css";
-import Profile from "./containers/Call/Profile";
+import Profile from "./containers/Bank/Profile";
 
 export default function App() {
+
   return (
     <MyProvider>
       <Router>
@@ -19,11 +20,8 @@ export default function App() {
           <Route path="/" exact>
             <Onboarding />
           </Route>
-          <Route path="/c" exact>
-            <Call />
-          </Route>
-          <Route path="/c/:id" exact>
-            <Call />
+          <Route path="/bank" exact>
+            <Bank />
           </Route>
           <Route path="/signup" exact>
             <Signup />
