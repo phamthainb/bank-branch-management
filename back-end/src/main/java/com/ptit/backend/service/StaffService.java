@@ -15,6 +15,4 @@ public interface StaffService {
     public StaffEntity findById(Long id);
 
     public List<StaffEntity> find(Pageable pageable);
-
-
 }
