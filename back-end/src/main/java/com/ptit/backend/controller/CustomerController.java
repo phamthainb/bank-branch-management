@@ -1,10 +1,9 @@
 package com.ptit.backend.controller;
 
 import com.ptit.backend.dto.CreateCustomerDto;
-import com.ptit.backend.dto.CreateStaffDto;
 import com.ptit.backend.dto.MyUserDetails;
 import com.ptit.backend.entity.CustomerEntity;
-import com.ptit.backend.entity.ResponseObject;
+import com.ptit.backend.utils.ResponseObject;
 import com.ptit.backend.entity.StaffEntity;
 import com.ptit.backend.entity.UserEntity;
 import com.ptit.backend.repository.StaffRepository;

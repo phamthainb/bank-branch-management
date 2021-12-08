@@ -11,5 +11,4 @@ import lombok.NoArgsConstructor;
 public class CreateAccountDto {
    private String code;
    private Long id_customer;
-   private Long id_package;
 }

@@ -4,7 +4,9 @@ import com.ptit.backend.dto.CreateAccountDto;
 import com.ptit.backend.dto.MyUserDetails;
 import com.ptit.backend.entity.*;
 import com.ptit.backend.repository.*;
+import com.ptit.backend.utils.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -32,19 +34,24 @@ public class AccountServiceImpl implements AccountService {
     public AccountEntity create(CreateAccountDto data) {
         // check exist id
         CustomerEntity customer = customerRepository.findById(data.getId_customer()).orElse(null);
-        AccountPackageEntity accountPackage = accountPackageRepository.findById(data.getId_package()).orElse(null);
+
         // get staff
         MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserEntity user = myUserDetails.getUser();
 
-        if(customer != null && accountPackage != null && user != null){
+        // check code is duplicate
+        AccountEntity a = accountRepository.findByCode(data.getCode());
+        if(a != null){
+            throw ApiResponse.builder().status(HttpStatus.CONFLICT).message("Mã tài khoản không hợp lệ").build();
+        }
+
+        if(customer != null && user != null){
             StaffEntity staffEntity = staffService.findByUsername(user.getUsername());
 
             AccountEntity accountEntity = new AccountEntity();
-            accountEntity.setAccountPackageEntity(accountPackage);
             accountEntity.setCustomer(customer);
             accountEntity.setStaff(staffEntity);
-            // set code
+            accountEntity.setStatus(true);
             accountEntity.setCode(data.getCode());
 
           return accountRepository.save(accountEntity);

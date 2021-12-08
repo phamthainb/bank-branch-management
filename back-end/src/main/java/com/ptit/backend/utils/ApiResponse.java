@@ -1,9 +1,11 @@
-package com.ptit.backend.entity;
+package com.ptit.backend.utils;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.http.HttpStatus;
 
-@Data
+@Builder
+@Getter
+@Setter
 public class ApiResponse extends RuntimeException {
     private HttpStatus status;
     private String message;
