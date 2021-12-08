@@ -1,7 +1,7 @@
 package com.ptit.backend.controller;
 
 import com.ptit.backend.entity.AccountPackageEntity;
-import com.ptit.backend.entity.ResponseObject;
+import com.ptit.backend.utils.ResponseObject;
 import com.ptit.backend.service.AccountPackageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

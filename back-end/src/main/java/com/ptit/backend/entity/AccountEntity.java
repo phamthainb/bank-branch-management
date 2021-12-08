@@ -19,6 +19,12 @@ public class AccountEntity extends BaseEntity{
     @Column(name="balance")
     private float balance;
 
+    @Column(name="balance_saving")
+    private float balance_saving;
+
+    @Column(name = "status") // when lock cannot: saving, transfer,.....
+    private Boolean status;
+
     @ManyToOne
     @JoinColumn(name = "id_staff")
     private StaffEntity staff;
@@ -29,6 +35,6 @@ public class AccountEntity extends BaseEntity{
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_account_package", referencedColumnName = "id")
-    private AccountPackageEntity accountPackageEntity;
+    private AccountPackageEntity accountPackage;
 
 }

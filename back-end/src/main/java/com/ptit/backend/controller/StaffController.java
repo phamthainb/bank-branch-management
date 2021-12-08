@@ -3,17 +3,15 @@ package com.ptit.backend.controller;
 import com.ptit.backend.dto.CreateStaffDto;
 import com.ptit.backend.dto.MyUserDetails;
 import com.ptit.backend.entity.AdminEntity;
-import com.ptit.backend.entity.ResponseObject;
+import com.ptit.backend.utils.ResponseObject;
 import com.ptit.backend.entity.StaffEntity;
 import com.ptit.backend.entity.UserEntity;
 import com.ptit.backend.service.StaffService;
 import com.ptit.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

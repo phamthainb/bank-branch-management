@@ -1,4 +1,4 @@
-package com.ptit.backend.entity;
+package com.ptit.backend.utils;
 
 import lombok.Builder;
 import lombok.Data;
