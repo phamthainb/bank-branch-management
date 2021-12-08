@@ -3,15 +3,13 @@ package com.ptit.backend.controller;
 import com.ptit.backend.dto.LoginDto;
 import com.ptit.backend.dto.MyUserDetails;
 import com.ptit.backend.dto.SignupDto;
-import com.ptit.backend.entity.ResponseObject;
+import com.ptit.backend.utils.ResponseObject;
 import com.ptit.backend.entity.UserEntity;
 import com.ptit.backend.service.UserService;
 import com.ptit.backend.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -35,9 +33,10 @@ public class AuthController {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         }
         catch (Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             return ResponseObject.builder().message("Thông tin tài khoản không chính xác.").status(HttpStatus.OK).build();
         }
+
         MyUserDetails myUserDetails = (MyUserDetails) userService.loadUserByUsername(request.getUsername());
         String jwt = JwtUtils.generateToken(myUserDetails);
 
