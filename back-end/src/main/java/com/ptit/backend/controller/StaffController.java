@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,9 @@ public class StaffController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping(value = "")
     public ResponseObject createStaff(@RequestBody CreateStaffDto createStaffDto){
@@ -50,7 +54,7 @@ public class StaffController {
 
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(createStaffDto.getUsername());
-        userEntity.setPassword(createStaffDto.getPassword());
+        userEntity.setPassword(bCryptPasswordEncoder.encode(createStaffDto.getPassword()));
         userEntity.setRole(UserEntity.Roles.STAFF);
 
         staffEntity.setAdmin(adminEntity);
