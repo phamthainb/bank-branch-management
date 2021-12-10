@@ -83,7 +83,10 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Page<AccountEntity> getList(Pageable pageable) {
+    public Page<AccountEntity> getList(String code, Pageable pageable) {
+        if(code != null){
+            return accountRepository.findAllByCodeContaining(code, pageable);
+        }
         return accountRepository.findAll(pageable);
     }
 

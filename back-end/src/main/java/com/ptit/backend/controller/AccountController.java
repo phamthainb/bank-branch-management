@@ -95,8 +95,8 @@ public class AccountController {
     }
 
     @GetMapping(value = "/list")
-    public ResponseObject getList(Pageable pageable){
-        Page<AccountEntity> a = accountService.getList(pageable);
+    public ResponseObject getList(@RequestParam(required = false) String code, Pageable pageable){
+        Page<AccountEntity> a = accountService.getList(code, pageable);
         return ResponseObject.builder().status(HttpStatus.OK).data(a).build();
     }
 
