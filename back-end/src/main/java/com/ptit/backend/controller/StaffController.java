@@ -1,7 +1,9 @@
 package com.ptit.backend.controller;
 
 import com.ptit.backend.dto.CreateStaffDto;
+import com.ptit.backend.dto.GetSalaryDto;
 import com.ptit.backend.dto.MyUserDetails;
+import com.ptit.backend.dto.ResSalaryDto;
 import com.ptit.backend.entity.AdminEntity;
 import com.ptit.backend.entity.CustomerEntity;
 import com.ptit.backend.utils.ResponseObject;
@@ -12,11 +14,14 @@ import com.ptit.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -106,5 +111,12 @@ public class StaffController {
         return ResponseObject.builder().status(HttpStatus.OK).message("Lấy danh sách Customer tạo bởi Staff thành công.").data(c).build();
     }
 
+    @GetMapping(value = "/salary")
+    public ResponseObject getSalary(@RequestParam Long staffId,
+                                    @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date start,
+                                    @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date end){
+        ResSalaryDto c = staffService.findSalary(staffId, start, end);
+        return ResponseObject.builder().status(HttpStatus.OK).message("Danh sách lương thành công").data(c).build();
+    }
 
 }
