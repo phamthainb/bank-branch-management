@@ -45,48 +45,6 @@ public class CustomerController {
     @Autowired
     AccountService accountService;
 
-    @PostMapping(value = "")
-    public ResponseObject createCustomer(@RequestBody CreateCustomerDto createCustomerDto){
-
-        // validate
-        UserEntity oldStaff = userService.findUser(createCustomerDto.getUsername());
-        if(oldStaff != null){
-            return ResponseObject.builder().status(HttpStatus.NOT_IMPLEMENTED).message("Username đã được sử sụng.").build();
-        }
-
-        // check who create
-        MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        CustomerEntity customerEntity = new CustomerEntity();
-        customerEntity.setAddress(createCustomerDto.getAddress());
-        customerEntity.setBirthday(createCustomerDto.getBirthday());
-        customerEntity.setCard_id(createCustomerDto.getCard_id());
-        customerEntity.setName(createCustomerDto.getName());
-        customerEntity.setStatus(createCustomerDto.getStatus());
-
-        UserEntity user = myUserDetails.getUser();
-        UserEntity userEntityStaff = userService.findUser(user.getUsername());
-
-        if(userEntityStaff != null){
-            StaffEntity staffEntity = staffService.findByUsername(userEntityStaff.getUsername());
-            customerEntity.setStaff(staffEntity);
-            UserEntity userEntity = new UserEntity();
-            userEntity.setUsername(createCustomerDto.getUsername());
-            userEntity.setPassword(bCryptPasswordEncoder.encode(createCustomerDto.getPassword()));
-            userEntity.setRole(UserEntity.Roles.CUSTOMER);
-
-            customerEntity.setUser(userEntity);
-            CustomerEntity newCustomer = customerService.createCustomer(customerEntity);
-            if(newCustomer != null){
-                return ResponseObject.builder().status(HttpStatus.CREATED).message("Tạo Khách hàng thành công.").data(newCustomer).build();
-            }
-        }
-
-        return ResponseObject.builder().status(HttpStatus.NOT_IMPLEMENTED).message("Tạo Khách hàng thất bại.").build();
-
-
-    }
-
     @GetMapping(value = "/list")
     public ResponseObject getCustomerList(Pageable pageable){
         Page<CustomerEntity> list = customerService.getCustomerList(pageable);

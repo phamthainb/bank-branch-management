@@ -3,6 +3,8 @@ package com.ptit.backend.controller;
 import com.ptit.backend.dto.LoginDto;
 import com.ptit.backend.dto.MyUserDetails;
 import com.ptit.backend.dto.SignupDto;
+import com.ptit.backend.entity.AdminEntity;
+import com.ptit.backend.repository.AdminRepository;
 import com.ptit.backend.utils.ResponseObject;
 import com.ptit.backend.entity.UserEntity;
 import com.ptit.backend.service.UserService;
@@ -24,6 +26,9 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    AdminRepository adminRepository;
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -56,10 +61,7 @@ public class AuthController {
         if (checkExist != null) {
             return ResponseObject.builder().message("Username đã tồn tại.").status(HttpStatus.CONFLICT).build();
         }
-        // check roles type
-//        if(!signup.getRoles().equals(UserEntity.Roles.CUSTOMER)){
-//            return ResponseObject.builder().message("Loại tài khoản không chính xác.").status(HttpStatus.NOT_IMPLEMENTED).data(null).build();
-//        }
+
         // save on db
         UserEntity newUser = new UserEntity();
         newUser.setUsername(signup.getUsername());
@@ -68,8 +70,15 @@ public class AuthController {
 
         UserEntity res = userService.create(newUser);
 
+        // check roles type
+        if(signup.getRoles().equals(UserEntity.Roles.ADMIN)){
+            AdminEntity admin = new AdminEntity();
+            admin.setUser(res);
+            adminRepository.save(admin);
+        }
+
         if (res.getId() != null) {
-            return ResponseObject.builder().message("Đăng ký tài khoản thành công.").status(HttpStatus.OK).build();
+            return ResponseObject.builder().message("Đăng ký tài khoản Admin thành công.").status(HttpStatus.OK).build();
         }
 
         return ResponseObject.builder().message("Có lỗi xảy ra.").status(HttpStatus.BAD_REQUEST).build();
