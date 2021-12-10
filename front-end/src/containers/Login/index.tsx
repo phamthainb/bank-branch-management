@@ -52,6 +52,14 @@ export default function Login() {
     }).catch((err) => {
       console.log("err: ", err);
     })
+      // .then((res: any) => {
+      //   console.log("res: ", res);
+      //   localStorage.setItem("token", res.data.data);
+      //   history.push("/");
+      // })
+      // .catch((err: any) => {
+      //   console.log("err: ", err);
+      // });
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -62,10 +70,7 @@ export default function Login() {
     <SLogin>
       <div className="wrapper">
         <SLogo>
-          <AiTwotoneBank
-            size={25}
-            color="white"
-          />
+          <AiTwotoneBank size={25} color="white" />
         </SLogo>
         <Title level={4}>Login</Title>
         <Form
@@ -101,7 +106,10 @@ export default function Login() {
           </Form.Item>
 
           <Divider plain>
-            or <Link to="/signup"><span style={{ fontWeight: 600 }}>Register</span></Link>
+            or{" "}
+            <Link to="/signup">
+              <span style={{ fontWeight: 600 }}>Register</span>
+            </Link>
           </Divider>
         </Form>
       </div>

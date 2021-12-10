@@ -1,6 +1,6 @@
 import { IconType } from "react-icons";
-import { FaRegUser } from "react-icons/fa";
-import { MdSupervisorAccount } from "react-icons/md";
+import { FaDollarSign, FaMoneyBillWave, FaMoneyCheckAlt, FaRegUser } from "react-icons/fa";
+import { MdAssignmentInd, MdSupervisorAccount, MdSwapHoriz } from "react-icons/md";
 import Accountmanagement from "../../SidebarStaff/Accountmanagement";
 
 export const menu = [
@@ -41,15 +41,27 @@ export const roleCustomer: IRole[] = [
   {
     name: "Quản lý tài khoản",
     icon: <MdSupervisorAccount />,
-    route: "/",
+    route: "/bank/customer/account",
     component: <Accountmanagement />
   },
   {
-    name: "Quản lý người dùng",
-    icon: <MdSupervisorAccount />,
-    route: "/",
+    name: "Chuyển tiền",
+    route: "/bank/customer/pay",
+    icon: <FaMoneyBillWave />,
     component: <Accountmanagement />
-  }
+  },
+  {
+    name: "Lịch sử giao dịch",
+    route: "/bank/customer/history",
+    icon: <MdSwapHoriz />,
+    component: <Accountmanagement />
+  },
+  {
+    name: "Cập nhật thông tin",
+    route: "/bank/customer/update",
+    icon: <MdAssignmentInd />,
+    component: <Accountmanagement />
+  },
 ]
 
 export const roleAdmin: IRole[] = [
