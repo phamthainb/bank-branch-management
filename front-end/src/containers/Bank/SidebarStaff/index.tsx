@@ -6,7 +6,7 @@ import { ToggleSidebarContext } from "src/common/context/ToggleSidebarContext";
 import CustomerManagement from "./CustomerManagement";
 import Accountmanagement from "./Accountmanagement";
 import { SSidebar } from "./styles";
-import { SidebarStaffContext } from "src/common/context/SidebarStaffContext";
+import { SidebarStaffContext } from "src/common/context/Staff/SidebarStaffContext";
 
 export default function SidebarStaff() {
   const { indexStaff } = useContext(SidebarStaffContext);

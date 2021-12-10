@@ -1,8 +1,8 @@
 import { createContext, ReactNode, useState } from "react";
 
 interface ISidebarStaffContext {
-  indexStaff: number;
-  setIndexStaff: any;
+  listCustomer: any;
+  setListCustomer: any;
 }
 
 export const SidebarStaffContext = createContext<ISidebarStaffContext>(
@@ -10,12 +10,10 @@ export const SidebarStaffContext = createContext<ISidebarStaffContext>(
 );
 
 const SidebarStaffProvider = ({ children }: { children: ReactNode }) => {
-  const [indexStaff, setIndexStaff] = useState(0);
-
-
+  const [listCustomer, setListCustomer] = useState(0);
 
   return (
-    <SidebarStaffContext.Provider value={{ indexStaff, setIndexStaff }}>
+    <SidebarStaffContext.Provider value={{ listCustomer, setListCustomer }}>
       {children}
     </SidebarStaffContext.Provider>
   );

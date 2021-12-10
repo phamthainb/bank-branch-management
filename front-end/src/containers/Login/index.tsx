@@ -1,25 +1,45 @@
-import React from "react";
+import React, { useContext } from "react";
 import { SLogin } from "./styles";
 import { Button, Divider, Form, Input } from "antd";
 import Title from "antd/lib/typography/Title";
 import { Link, useHistory } from "react-router-dom";
 import { SLogo } from "../Signup/styles";
 import { AiTwotoneBank } from "react-icons/ai";
-import { request } from "../../api/axios"
+import { request, requestToken } from "../../api/axios"
+import API_URL from "src/api/url";
+import { ProfileContext } from "src/common/context/NavigatorContext";
+import { Alert } from "src/common/components/Alert";
 
 export default function Login() {
   const history = useHistory();
+  const { data, setData } = useContext(ProfileContext)
+
   const onFinish = (values: any) => {
-    console.log("values: ", values);
     request({
       method: "POST",
-      url: "/auth/login",
+      url: API_URL.AUTH.LOGIN,
       data: values,
     }).then((res) => {
-      console.log("res: ", res);
+      localStorage.setItem("token", res?.data?.data)
 
-      // history.push("bank")
+      // get profile
+      if (res?.data) {
+        Alert({
+          name: `${res?.data?.message}`,
+          icon: res?.data?.data ? "success" : "error",
+        });
 
+        if (res?.data?.data) {
+          requestToken({
+            method: "GET",
+            url: API_URL.AUTH.PROFILE
+          }).then((res) => {
+            setData(res?.data?.data)
+            const role = data?.user?.role;
+            history.push(`bank/${role?.toLowerCase()}`)
+          })
+        }
+      }
     }).catch((err) => {
       console.log("err: ", err);
     })

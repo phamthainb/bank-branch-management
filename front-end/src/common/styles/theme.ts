@@ -5,7 +5,7 @@ const theme = {
     bg: {
       main: "white",
       sub: "rgba(0,123,255,.05)",
-      dropdown: 'white',
+      dropdown: "white",
       Call: "#eaedf2",
       message: {
         send: "#1890ff",
@@ -36,7 +36,7 @@ const theme = {
     bg: {
       main: "#263238",
       sub: "rgba(0,123,255,.05)",
-      dropdown: '#455a64',
+      dropdown: "#455a64",
       Call: "#263238",
       message: {
         send: "#1890ff",
@@ -61,6 +61,17 @@ const theme = {
       inactive: "rgba(255, 255, 255, 0.7)",
       active: "rgba(255, 255, 255, 0.7)",
     },
+  },
+
+  color: {
+    bgr: "#e5f5f8",
+    primary_color: "#20cb8d",
+    green_color: "#20CB8D",
+    red_color: "#FF6565",
+    text_color: "#6e7b97",
+    title_color: "#000f61",
+    input_placeholder_color: "#A6B0CF",
+    button_hover__color: "#0075FF",
   },
 };
 
