@@ -20,3 +20,22 @@ const NavigatorProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export default NavigatorProvider;
+
+interface IProfileContenxt {
+  data: any;
+  setData: any;
+}
+
+export const ProfileContext = createContext<IProfileContenxt>(
+  {} as IProfileContenxt
+);
+
+export const ProfileProvider = ({ children }: { children: ReactNode }) => {
+  const [data, setData] = useState<any>();
+
+  return (
+    <ProfileContext.Provider value={{ data, setData }}>
+      {children}
+    </ProfileContext.Provider>
+  );
+};

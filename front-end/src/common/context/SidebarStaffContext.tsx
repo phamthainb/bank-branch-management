@@ -12,6 +12,8 @@ export const SidebarStaffContext = createContext<ISidebarStaffContext>(
 const SidebarStaffProvider = ({ children }: { children: ReactNode }) => {
   const [indexStaff, setIndexStaff] = useState(0);
 
+
+
   return (
     <SidebarStaffContext.Provider value={{ indexStaff, setIndexStaff }}>
       {children}

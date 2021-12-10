@@ -2,13 +2,27 @@ import React from "react";
 import { SLogin } from "./styles";
 import { Button, Divider, Form, Input } from "antd";
 import Title from "antd/lib/typography/Title";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { SLogo } from "../Signup/styles";
 import { AiTwotoneBank } from "react-icons/ai";
+import { request } from "../../api/axios"
 
 export default function Login() {
+  const history = useHistory();
   const onFinish = (values: any) => {
-    console.log("Success:", values);
+    console.log("values: ", values);
+    request({
+      method: "POST",
+      url: "/auth/login",
+      data: values,
+    }).then((res: any) => {
+      console.log("res: ", res);
+
+      // history.push("bank")
+
+    }).catch((err: any) => {
+      console.log("err: ", err);
+    })
   };
 
   const onFinishFailed = (errorInfo: any) => {

@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import AuthProvider from "./AuthContext";
 import GLProvider from "./GlobalLoadingContext";
-import NavigatorProvider from "./NavigatorContext";
+import NavigatorProvider, { ProfileProvider } from "./NavigatorContext";
 import CustomThemeProvider from "./ThemeContext";
 import ToggleSidebarProvider from "./ToggleSidebarContext";
 import ReactsProvider from "./ReactContext";
@@ -17,17 +17,19 @@ export default function MyProvider({ children }: { children: ReactNode }) {
         <AuthProvider>
           <RoleProvider>
             <NavigatorProvider>
-              <SidebarAdminProvider>
-                <SidebarStaffProvider>
-                  <SidebarCustomerProvider>
-                    <ToggleSidebarProvider>
-                      <ReactsProvider>
-                        {children}
-                      </ReactsProvider>
-                    </ToggleSidebarProvider>
-                  </SidebarCustomerProvider>
-                </SidebarStaffProvider>
-              </SidebarAdminProvider>
+              <ProfileProvider>
+                <SidebarAdminProvider>
+                  <SidebarStaffProvider>
+                    <SidebarCustomerProvider>
+                      <ToggleSidebarProvider>
+                        <ReactsProvider>
+                          {children}
+                        </ReactsProvider>
+                      </ToggleSidebarProvider>
+                    </SidebarCustomerProvider>
+                  </SidebarStaffProvider>
+                </SidebarAdminProvider>
+              </ProfileProvider>
             </NavigatorProvider>
           </RoleProvider>
         </AuthProvider>
