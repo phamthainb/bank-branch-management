@@ -3,30 +3,29 @@ import React, { useContext, useEffect, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import { requestToken } from "src/api/axios";
 import WrapContent from "src/common/components/WrapContent";
-import { ProfileContext } from "src/common/context/NavigatorContext";
+import { NavigatorContext, ProfileContext } from "src/common/context/NavigatorContext";
 import { ToggleSidebarContext } from "src/common/context/ToggleSidebarContext";
 import { ThemeContext } from "styled-components";
-import { SInnerSidebar } from "../Salary/styles";
-import CreateAccount from "./CreateAccount";
-import EditAccount from "./EditAccount";
-import Recharge from "./Recharge";
+import EditCustomer from "./EditCustomer";
+import { SInnerSidebar } from "./styles";
 
-export default function Accountmanagement() {
-  const { toggleSidebar } = useContext(ToggleSidebarContext);
+export default function EditCustomerManagement() {
   const { theme } = useContext(ThemeContext);
   const { data } = useContext(ProfileContext);
+
+  const { toggleSidebar } = useContext(ToggleSidebarContext);
   const [state, setstate] = useState<any>();
 
   useEffect(() => {
     if (data) {
       requestToken({
         method: "GET",
-        url: "account/list",
+        url: "staff/customer",
         params: {
           staffId: data?.id
         }
       }).then((res) => {
-        // console.log(res.data.data);
+        console.log(res.data.data);
         let resData = res.data.data;
         setstate({ data: resData.content })
       }).catch()
@@ -34,7 +33,7 @@ export default function Accountmanagement() {
   }, [data])
 
   return (
-    <WrapContent title="Quản lý tài khoản">
+    <WrapContent title="Quản lý khách hàng đã tạo">
       <SInnerSidebar>
         <div className="top">
           <h3
@@ -53,19 +52,13 @@ export default function Accountmanagement() {
         <Divider />
 
         <div className="handle">
-          <div className="handle_item create">
-            <p>Thêm mới Tài khoản</p>
-            <CreateAccount />
-          </div>
-          <div className="handle_item edit">
-            <p>Sửa Tài khoản</p>
-            <EditAccount />
-          </div>
+          <p>Thêm mới khách hàng</p>
+          <EditCustomer />
         </div>
 
         <div className="body">
-          <h3>Danh sách tài khoản</h3>
-
+          <h3>Danh sách khách hàng</h3>
+          {/* <Table columns={columns} dataSource={state?.data ?? []} /> */}
           <ListData data={state?.data ?? []} />
         </div>
       </SInnerSidebar>
@@ -107,15 +100,15 @@ const ListData = ({ data }: any) => {
     });
   };
 
-  const [account, setAccount] = useState<any>();
+  const [customer, setCustomer] = useState<any>();
 
   const showDrawer = (id: any) => {
-    requestToken({ method: "GET", url: `/account?id=${id}` }).then((res: any) => {
+    requestToken({ method: "GET", url: `/customer?id=${id}` }).then((res: any) => {
       setState({
         visible: true,
       });
-      // console.log(res.data.data);
-      setAccount(res.data.data);
+      console.log(res.data.data);
+      setCustomer(res.data.data);
     })
   };
 
@@ -128,17 +121,10 @@ const ListData = ({ data }: any) => {
           <List.Item
             key={item.id}
             actions={[
-              <>
-                <div className="recharge">
-                  <Recharge account={account} />
-                </div>
-
-                <div className="detaik">
-                  <Button onClick={() => showDrawer(item.id)} key={`a-${item.id}`}>
-                    Xem chi tiết
-                  </Button>
-                </div>
-              </>
+              // eslint-disable-next-line jsx-a11y/anchor-is-valid
+              <Button onClick={() => showDrawer(item.id)} key={`a-${item.id}`}>
+                Xem chi tiết
+              </Button>
             ]}
           >
             <List.Item.Meta
@@ -152,7 +138,7 @@ const ListData = ({ data }: any) => {
         )}
       />
 
-      {account && <Drawer
+      {customer && <Drawer
         width={640}
         placement="right"
         closable={false}
@@ -160,25 +146,14 @@ const ListData = ({ data }: any) => {
         visible={state.visible}
       >
         <p className="site-description-item-profile-p" style={{ marginBottom: 24 }}>
-          Thông tin tài khoản
+          Thông tin khách hàng
         </p>
         <Row>
           <Col span={12}>
-            <DescriptionItem title="Mã tài khoản" content={account?.id} />
+            <DescriptionItem title="Mã khách hàng" content={customer?.id} />
           </Col>
           <Col span={12}>
-            <DescriptionItem title="Số tài khoản" content={account?.code} />
-          </Col>
-        </Row>
-
-        <Divider />
-
-        <Row>
-          <Col span={12}>
-            <DescriptionItem title="Số dư" content={account?.balance} />
-          </Col>
-          <Col span={12}>
-            <DescriptionItem title="Loại tài khoản" content={account?.apackage?.type === "saving" ? "Tiết kiệm" : "Tín dụng"} />
+            <DescriptionItem title="CMT/CCCD" content={customer?.card_id} />
           </Col>
         </Row>
 
@@ -186,10 +161,10 @@ const ListData = ({ data }: any) => {
 
         <Row>
           <Col span={12}>
-            <DescriptionItem title="Tên người dùng" content={account?.customer?.name} />
+            <DescriptionItem title="Họ và Tên" content={customer?.name} />
           </Col>
           <Col span={12}>
-            <DescriptionItem title="Mã người dùng" content={account?.customer?.id} />
+            <DescriptionItem title="Tên tài khoản" content={customer?.user.username} />
           </Col>
         </Row>
 
@@ -197,10 +172,10 @@ const ListData = ({ data }: any) => {
 
         <Row>
           <Col span={12}>
-            <DescriptionItem title="Trạng thái" content={account?.status === true ? "Hoạt động" : "Khóa"} />
+            <DescriptionItem title="Địa chỉ" content={customer?.address} />
           </Col>
           <Col span={12}>
-            <DescriptionItem title="Nhân viên quản lý" content={account?.staff?.name} />
+            <DescriptionItem title="Ngày sinh" content={customer?.birthday} />
           </Col>
         </Row>
       </Drawer>}
