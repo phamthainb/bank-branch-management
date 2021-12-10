@@ -13,6 +13,7 @@ import {
     Switch,
 } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
+import { requestToken } from 'src/api/axios';
 
 type RequiredMark = boolean | 'optional';
 
@@ -36,6 +37,10 @@ export default function CreateStaff() {
     const showModal = () => {
         setState({ ...state, visible: true });
     }
+    const onSubmit = (data: any) => {
+        console.log("data", data);
+
+    }
     return (
         <div>
             <Button type="primary" onClick={showModal}>
@@ -46,70 +51,62 @@ export default function CreateStaff() {
                 visible={visible}
                 title="Thêm mới nhân viên"
                 width={700}
-                onOk={handleOk}
-                onCancel={handleCancel}
-                footer={[
-                    <Button key="back" onClick={handleCancel}>
-                        Huỷ 
-                    </Button>,
-                    <Button key="submit" type="primary" onClick={handleOk}>
-                        Tạo 
-                    </Button>,
-
-                ]}
+                footer={null}
             >
                 <Form
-                    labelCol={{ span: 4 }}
+                    labelCol={{ span: 6 }}
                     wrapperCol={{ span: 14 }}
                     layout="horizontal"
-                    // initialValues={{ size: componentSize }}
-                    //onValuesChange={onFormLayoutChange}
                     size={"middle"}
+                    onFinish={(data: any) => {
+                        console.log("data", data);
+                        requestToken({method: "POST", url: "/staff", data: {
+                            ...data,
+                            birthday: data.birthday.format("DD/MM/YYYY")
+                        }}).then((res) => {
+
+                        }).catch((err) =>{})
+                    }}
                 >
-                    
-                    <Form.Item label="Tên">
+
+                    <Form.Item label="Tài khoản" name="username">
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Select">
-                        <Select>
-                            <Select.Option value="demo">Demo</Select.Option>
-                        </Select>
+                    <Form.Item label="Mật khẩu" name="password">
+                        <Input />
                     </Form.Item>
-                    <Form.Item label="TreeSelect">
-                        <TreeSelect
-                            treeData={[
-                                { title: 'Light', value: 'light', children: [{ title: 'Bamboo', value: 'bamboo' }] },
-                            ]}
-                        />
+                    <Form.Item label="Họ và tên" name="name">
+                        <Input />
                     </Form.Item>
-                    <Form.Item label="Cascader">
-                        <Cascader
-                            options={[
-                                {
-                                    value: 'zhejiang',
-                                    label: 'Zhejiang',
-                                    children: [
-                                        {
-                                            value: 'hangzhou',
-                                            label: 'Hangzhou',
-                                        },
-                                    ],
-                                },
-                            ]}
-                        />
+                    <Form.Item label="CMT" name="card_id">
+                        <Input />
                     </Form.Item>
-                    <Form.Item label="DatePicker">
+                    <Form.Item label="Ngày sinh" name="birthday">
                         <DatePicker />
                     </Form.Item>
-                    <Form.Item label="InputNumber">
+
+                    <Form.Item label="Số năm kinh nghiệm" name="exp_year">
                         <InputNumber />
                     </Form.Item>
-                    <Form.Item label="Switch" valuePropName="checked">
-                        <Switch />
+
+                    <Form.Item label="Bậc nghề" name="rate">
+                        <Select>
+                            <Select.Option value="low">Thấp</Select.Option>
+                            <Select.Option value="mid">Trung bình</Select.Option>
+                            <Select.Option value="high">Cao</Select.Option>
+                        </Select>
                     </Form.Item>
-                    <Form.Item label="Button">
-                        <Button>Button</Button>
+
+                    <Form.Item label="Vị trí công việc" name="position">
+                        <Input />
                     </Form.Item>
+
+                    <Button key="back" onClick={handleCancel}>
+                        Huỷ
+                    </Button>
+                    <Button key="submit" type="primary" htmlType="submit">
+                        Tạo
+                    </Button>
                 </Form>
             </Modal>
         </div>
