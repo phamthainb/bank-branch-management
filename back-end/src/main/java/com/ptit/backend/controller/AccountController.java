@@ -2,6 +2,7 @@ package com.ptit.backend.controller;
 
 import com.ptit.backend.dto.*;
 import com.ptit.backend.entity.AccountEntity;
+import com.ptit.backend.repository.AccountRepository;
 import com.ptit.backend.utils.ResponseObject;
 import com.ptit.backend.entity.StaffEntity;
 import com.ptit.backend.service.AccountService;
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController {
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    AccountRepository accountRepository;
 
     @Autowired
     SalaryService salaryService;
@@ -111,5 +115,15 @@ public class AccountController {
             return ResponseObject.builder().status(HttpStatus.OK).data(res).message("Cập nhật thành công.").build();
         }
         return ResponseObject.builder().status(HttpStatus.NOT_IMPLEMENTED).message("Cập nhật thất bại.").build();
+    }
+
+    @GetMapping(value = "/check-account")
+    public ResponseObject update(@RequestParam String code){
+        AccountEntity a = accountRepository.findByCode(code);
+
+        if(a != null){
+            return ResponseObject.builder().status(HttpStatus.OK).data(a).message("Thông tin tài khoản thành công.").build();
+        }
+        return ResponseObject.builder().status(HttpStatus.NOT_IMPLEMENTED).message("Không tìm thấy tài khoản.").build();
     }
 }

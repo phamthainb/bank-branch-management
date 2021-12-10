@@ -24,7 +24,7 @@ public class TransactionEntity extends BaseEntity{
     private Float amount;
 
     @Column(name = "type")
-    private String type; // in, out
+    private String type; // in, out, pay
 
     @Column(name = "note")
     private String note;
