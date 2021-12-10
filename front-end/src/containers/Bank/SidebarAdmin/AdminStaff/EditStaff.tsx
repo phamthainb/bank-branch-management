@@ -1,4 +1,5 @@
-import { Modal } from 'antd';
+import { useState, useEffect } from 'react'
+import { Divider, Modal, Switch } from 'antd';
 import {
     Form,
     Input,
@@ -9,33 +10,49 @@ import {
 } from 'antd';
 import { requestToken } from 'src/api/axios';
 import { Alert } from 'src/common/components/Alert';
+import moment from 'moment';
 
-export default function CreateStaff({ open, setOpen, callback }: any) {
+export default function EditStaff({ open, setOpen }: any) {
 
     const handleCancel = () => {
-        setOpen(false)
+        setOpen(0)
     };
+
+    // console.log("open", open);
+
+    const [staff, setStaff] = useState<any>();
+
+    useEffect(() => {
+        if (open) {
+            requestToken({ method: "GET", url: `/staff?id=${open}` }).then(res => {
+                setStaff(res.data.data);
+                //console.log("res", res.data);
+            }).catch(err => { })
+        }
+    }, [open])
 
     return (
         <div>
+
             <Modal
                 onCancel={handleCancel}
-                visible={open}
-                title="Thêm mới nhân viên"
+                visible={open ? true : false}
+                title="Chỉnh sửa nhân viên"
                 width={700}
                 footer={null}
             >
-                <Form
+                {staff && <Form
                     labelCol={{ span: 6 }}
                     wrapperCol={{ span: 14 }}
                     layout="horizontal"
                     size={"middle"}
                     onFinish={(data: any) => {
-                        //console.log("data", data);
+                        console.log("data", data);
                         requestToken({
-                            method: "POST", url: "/staff", data: {
+                            method: "PUT", url: "/staff", data: {
                                 ...data,
-                                birthday: data.birthday.format("DD/MM/YYYY")
+                                birthday: data.birthday.format("DD/MM/YYYY"),
+                                id: staff.id
                             }
                         }).then((res) => {
                             if (res.data.status === "CREATED") {
@@ -43,19 +60,27 @@ export default function CreateStaff({ open, setOpen, callback }: any) {
                             } else {
                                 Alert({ name: res.data.message, icon: "info" })
                             }
-                            callback();
                         }).catch((err) => {
-                            Alert({ name: err?.data?.message??"Có lỗi xảy ra.", icon: "error" })
+                            Alert({ name: err.data.message, icon: "error" })
                         })
+                    }}
+                    initialValues={{
+                        "address": staff?.address ?? "",
+                        "birthday": moment(staff?.birthday),
+                        "card_id": staff?.card_id ?? "",
+                        "expYear": staff?.expYear ?? 0,
+                        "name": staff?.name ?? "",
+                        "position": staff?.position ?? "",
+                        "rate": staff?.rate ?? "",
+                        "username": staff?.user?.username ?? "",
+                        "status": staff?.status
                     }}
                 >
 
                     <Form.Item label="Tài khoản" name="username">
-                        <Input />
+                        <Input disabled value={staff.username} />
                     </Form.Item>
-                    <Form.Item label="Mật khẩu" name="password">
-                        <Input />
-                    </Form.Item>
+
                     <Form.Item label="Họ và tên" name="name">
                         <Input />
                     </Form.Item>
@@ -66,7 +91,7 @@ export default function CreateStaff({ open, setOpen, callback }: any) {
                         <DatePicker />
                     </Form.Item>
 
-                    <Form.Item label="Số năm kinh nghiệm" name="exp_year">
+                    <Form.Item label="Số năm kinh nghiệm" name="expYear">
                         <InputNumber />
                     </Form.Item>
 
@@ -84,14 +109,19 @@ export default function CreateStaff({ open, setOpen, callback }: any) {
                     <Form.Item label="Địa chỉ" name="address">
                         <Input />
                     </Form.Item>
+                    <Divider />
+                    <Form.Item label="Trạng thái" valuePropName="status" name="status">
+                        <Switch defaultChecked={staff.status} />
+                    </Form.Item>
+                    <Divider />
 
                     <Button key="back" onClick={handleCancel}>
                         Huỷ
                     </Button>
                     <Button key="submit" type="primary" htmlType="submit">
-                        Tạo
+                        Cập nhật
                     </Button>
-                </Form>
+                </Form>}
             </Modal>
         </div>
     )
