@@ -44,11 +44,10 @@ export default function SidebarCustomer() {
             <UpdateProfile />
           </Route>
         </Switch>
-        {/* {indexCustomer === 0 && <Accountmanagement />}
-        {indexCustomer === 1 && <Recharge />}
-        {indexCustomer === 2 && <Payment />}
-        {indexCustomer === 3 && <TransactionHistory />}
-        {indexCustomer === 4 && <UpdateProfile />} */}
+        {indexCustomer === 0 && <Accountmanagement />}
+        {indexCustomer === 1 && <Payment />}
+        {indexCustomer === 2 && <TransactionHistory />}
+        {indexCustomer === 3 && <UpdateProfile />}
       </SSidebar>
     </>
   );
