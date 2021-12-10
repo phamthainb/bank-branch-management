@@ -5,7 +5,7 @@ import NavigatorProvider, { ProfileProvider } from "./NavigatorContext";
 import CustomThemeProvider from "./ThemeContext";
 import ToggleSidebarProvider from "./ToggleSidebarContext";
 import ReactsProvider from "./ReactContext";
-import SidebarStaffProvider from "./SidebarStaffContext";
+import SidebarStaffProvider from "./Staff/SidebarStaffContext";
 import SidebarCustomerProvider from "./SidebarCustomerContext";
 import SidebarAdminProvider from "./SidebarAdminContext";
 import RoleProvider from "./RoleContext";

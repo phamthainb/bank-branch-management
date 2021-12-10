@@ -35,6 +35,38 @@ export const mixinFlexWrapAlignCenter = css`
   flex-wrap: wrap;
 `;
 
+export const mixinsScrollBar1 = css`
+  /* width */
+  ::-webkit-scrollbar {
+    width: 6px;
+    border-radius: 6px;
+    height: 6px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 6px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #888;
+  }
+`;
+
+export const mixinsTextOverflow = (line: number) => `
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: ${line};
+  -webkit-box-orient: vertical;
+`;
 
 export const mixinsScrollBar = (
   width?: string,
@@ -45,22 +77,22 @@ export const mixinsScrollBar = (
   thumbHoverColor?: string
 ) => `
   ::-webkit-scrollbar {
-    width: ${width || '6px'};
-    height: ${height || '6px'};
+    width: ${width || "6px"};
+    height: ${height || "6px"};
   }
 
   ::-webkit-scrollbar-track {
-    background: ${trackColor || 'white'};
+    background: ${trackColor || "white"};
   }
 
   ::-webkit-scrollbar-thumb {
-    background: ${thumbColor || '#c1c1c1'};
-    border-radius: ${borderRadius || '6px'};
+    background: ${thumbColor || "#c1c1c1"};
+    border-radius: ${borderRadius || "6px"};
   }
 
   @media (hover: hover) and (pointer: fine) {
     ::-webkit-scrollbar-thumb:hover {
-      background: ${thumbHoverColor || '#555'};
+      background: ${thumbHoverColor || "#555"};
     }
   }
 `;
