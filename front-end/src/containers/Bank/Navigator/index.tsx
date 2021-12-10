@@ -10,10 +10,11 @@ import { AiTwotoneBank } from "react-icons/ai";
 import { SidebarStaffContext } from "src/common/context/Staff/SidebarStaffContext";
 import { SidebarCustomerContext } from "src/common/context/SidebarCustomerContext";
 import { SidebarAdminContext } from "src/common/context/SidebarAdminContext";
+import { RoleContext } from "src/common/context/RoleContext";
 
-export default function Navigator({ role }: { role: string }) {
+export default function Navigator() {
   const { theme } = useContext(ThemeContext);
-
+  const { role } = useContext(RoleContext);
   const { indexStaff, setIndexStaff } = useContext(SidebarStaffContext);
   const { indexCustomer, setIndexCustomer } = useContext(SidebarCustomerContext);
   const { indexAdmin, setIndexAdmin } = useContext(SidebarAdminContext);
@@ -75,22 +76,22 @@ export default function Navigator({ role }: { role: string }) {
             roleAdmin.map((st, i) => {
               return (
                 <Link to={`${st.route}`}>
-                <Tooltip placement="right" title="">
-                  <SHandleButton
-                    active={indexAdmin === i}
-                    onClick={() => {
-                      setIndexAdmin(i);
-                      toggleSidebar && toggleSidebar(true);
-                    }}
-                  >
-                    <div className="img">
-                      {
-                        st.icon
-                      }
-                    </div>
-                    <span>{st.name}</span>
-                  </SHandleButton>
-                </Tooltip>
+                  <Tooltip placement="right" title="">
+                    <SHandleButton
+                      active={indexAdmin === i}
+                      onClick={() => {
+                        setIndexAdmin(i);
+                        toggleSidebar && toggleSidebar(true);
+                      }}
+                    >
+                      <div className="img">
+                        {
+                          st.icon
+                        }
+                      </div>
+                      <span>{st.name}</span>
+                    </SHandleButton>
+                  </Tooltip>
                 </Link>
               )
             })

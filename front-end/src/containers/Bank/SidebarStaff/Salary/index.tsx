@@ -6,24 +6,30 @@ import WrapContent from "src/common/components/WrapContent";
 import { ProfileContext } from "src/common/context/NavigatorContext";
 import { ToggleSidebarContext } from "src/common/context/ToggleSidebarContext";
 import { ThemeContext } from "styled-components";
-import { SInnerSidebar } from "../Salary/styles";
-import CreateAccount from "./CreateAccount";
-import EditAccount from "./EditAccount";
-import Recharge from "./Recharge";
+import { SInnerSidebar } from "./styles";
 
-export default function Accountmanagement() {
+export default function Salary() {
   const { toggleSidebar } = useContext(ToggleSidebarContext);
   const { theme } = useContext(ThemeContext);
   const { data } = useContext(ProfileContext);
   const [state, setstate] = useState<any>();
 
+  const date = new Date();
+  const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+  const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+  console.log("firstDay: ", firstDay);
+  console.log("lastDay: ", lastDay);
+
   useEffect(() => {
     if (data) {
       requestToken({
         method: "GET",
-        url: "account/list",
+        url: "staff/salary",
         params: {
-          staffId: data?.id
+          start: firstDay,
+          staffId: data?.id,
+          end: firstDay,
         }
       }).then((res) => {
         // console.log(res.data.data);
@@ -31,10 +37,10 @@ export default function Accountmanagement() {
         setstate({ data: resData.content })
       }).catch()
     }
-  }, [data])
+  }, [])
 
   return (
-    <WrapContent title="Quản lý tài khoản">
+    <WrapContent title="Bảng lương">
       <SInnerSidebar>
         <div className="top">
           <h3
@@ -47,24 +53,13 @@ export default function Accountmanagement() {
 
         <Divider />
         <div className="search">
-          <h3>Tìm kiếm </h3>
+          <h3>Xem lương từ ngày - đến ngày</h3>
           <FormLayoutDemo />
         </div>
         <Divider />
 
-        <div className="handle">
-          <div className="handle_item create">
-            <p>Thêm mới Tài khoản</p>
-            <CreateAccount />
-          </div>
-          <div className="handle_item edit">
-            <p>Sửa Tài khoản</p>
-            <EditAccount />
-          </div>
-        </div>
-
         <div className="body">
-          <h3>Danh sách tài khoản</h3>
+          <h3>Danh sách</h3>
 
           <ListData data={state?.data ?? []} />
         </div>
@@ -72,7 +67,6 @@ export default function Accountmanagement() {
     </WrapContent>
   );
 }
-
 
 const FormLayoutDemo = () => {
   const [form] = Form.useForm();
@@ -129,10 +123,6 @@ const ListData = ({ data }: any) => {
             key={item.id}
             actions={[
               <>
-                <div className="recharge">
-                  <Recharge account={account} />
-                </div>
-
                 <div className="detaik">
                   <Button onClick={() => showDrawer(item.id)} key={`a-${item.id}`}>
                     Xem chi tiết

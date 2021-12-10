@@ -3,10 +3,11 @@ import { useRouteMatch } from "react-router";
 import Overlay from "src/common/components/Overlay";
 import { NavigatorContext } from "src/common/context/NavigatorContext";
 import { ToggleSidebarContext } from "src/common/context/ToggleSidebarContext";
-import CustomerManagement from "./CustomerManagement";
+import Salary from "./Salary";
 import Accountmanagement from "./Accountmanagement";
 import { SSidebar } from "./styles";
 import { SidebarStaffContext } from "src/common/context/Staff/SidebarStaffContext";
+import CreateCustomerManagement from "./EditCustomerManagement";
 
 export default function SidebarStaff() {
   const { indexStaff } = useContext(SidebarStaffContext);
@@ -28,8 +29,9 @@ export default function SidebarStaff() {
         />
       )}
       <SSidebar open={open}>
-        {indexStaff === 0 && <CustomerManagement />}
+        {indexStaff === 0 && <CreateCustomerManagement />}
         {indexStaff === 1 && <Accountmanagement />}
+        {indexStaff === 2 && <Salary />}
       </SSidebar>
     </>
   );
