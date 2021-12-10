@@ -5,7 +5,7 @@ export const SNavigator = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 300px;
+  width: 240px;
   min-width: 80px;
   border-right: ${(props) => `1px solid ${props.theme.theme.border}`};
   padding: 15px;

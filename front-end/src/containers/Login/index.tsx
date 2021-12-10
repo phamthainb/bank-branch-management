@@ -9,10 +9,12 @@ import { request, requestToken } from "../../api/axios"
 import API_URL from "src/api/url";
 import { ProfileContext } from "src/common/context/NavigatorContext";
 import { Alert } from "src/common/components/Alert";
+import { RoleContext } from "src/common/context/RoleContext";
 
 export default function Login() {
   const history = useHistory();
   const { data, setData } = useContext(ProfileContext)
+  const { setRole } = useContext(RoleContext);
 
   const onFinish = (values: any) => {
     request({
@@ -35,8 +37,11 @@ export default function Login() {
             url: API_URL.AUTH.PROFILE
           }).then((res) => {
             setData(res?.data?.data)
-            const role = data?.user?.role;
-            history.push(`bank/${role?.toLowerCase()}`)
+            const role = res?.data?.user?.role?.toLowerCase();
+            if (role) {
+              setRole(role);
+              history.push(`bank/${role}`)
+            }
           })
         }
       }
