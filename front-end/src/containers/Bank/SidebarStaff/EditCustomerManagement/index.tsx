@@ -25,7 +25,7 @@ export default function EditCustomerManagement() {
           staffId: data?.id
         }
       }).then((res) => {
-        console.log(res.data.data);
+        // console.log(res.data.data);
         let resData = res.data.data;
         setstate({ data: resData.content })
       }).catch()

@@ -8,7 +8,7 @@ type WrapContentProps = {
 
 const WrapContent: FC<WrapContentProps> = ({ children, title }) => {
   const { data } = useContext(ProfileContext);
-  console.log("data: ", data);
+  // console.log("data: ", data);
 
   return (
     <WrapContentStyles>

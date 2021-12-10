@@ -1,4 +1,5 @@
-import { Avatar, Button, Col, Divider, Drawer, Form, Input, List, Row } from "antd";
+import { Avatar, Button, Col, DatePicker, Divider, Drawer, Form, Input, List, Row } from "antd";
+import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import { requestToken } from "src/api/axios";
@@ -13,31 +14,44 @@ export default function Salary() {
   const { theme } = useContext(ThemeContext);
   const { data } = useContext(ProfileContext);
   const [state, setstate] = useState<any>();
+  // console.log("state?.data: ", state);
 
   const date = new Date();
   const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
   const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-  console.log("firstDay: ", firstDay);
-  console.log("lastDay: ", lastDay);
+
+  const [search, setSearch] = useState<any>({});
 
   useEffect(() => {
     if (data) {
-      requestToken({
-        method: "GET",
-        url: "staff/salary",
-        params: {
-          start: firstDay,
-          staffId: data?.id,
-          end: firstDay,
-        }
-      }).then((res) => {
-        // console.log(res.data.data);
-        let resData = res.data.data;
-        setstate({ data: resData.content })
-      }).catch()
+      if (Object.keys(search).length > 0) {
+        requestToken({
+          method: "GET",
+          url: "staff/salary",
+          params: {
+            start: search?.start?.format("yyyy-MM-DD"),
+            staffId: data?.id,
+            end: search?.end?.format("yyyy-MM-DD"),
+          }
+        }).then((res) => {
+          setstate(res?.data?.data?.list)
+        }).catch()
+      } else {
+        requestToken({
+          method: "GET",
+          url: "staff/salary",
+          params: {
+            start: firstDay,
+            staffId: data?.id,
+            end: lastDay,
+          }
+        }).then((res) => {
+          setstate(res?.data?.data?.list)
+        }).catch()
+      }
     }
-  }, [])
+  }, [data, search])
 
   return (
     <WrapContent title="Bảng lương">
@@ -54,40 +68,52 @@ export default function Salary() {
         <Divider />
         <div className="search">
           <h3>Xem lương từ ngày - đến ngày</h3>
-          <FormLayoutDemo />
+          <FormLayoutDemo setSearch={setSearch} />
         </div>
         <Divider />
 
         <div className="body">
           <h3>Danh sách</h3>
 
-          <ListData data={state?.data ?? []} />
+          <ListData data={state ?? []} />
         </div>
       </SInnerSidebar>
     </WrapContent>
   );
 }
 
-const FormLayoutDemo = () => {
+const FormLayoutDemo = ({ setSearch }: { setSearch: any }) => {
   const [form] = Form.useForm();
-  const [formLayout, setFormLayout] = useState('inline');
 
   return (
     <Form
       layout={"inline"}
       form={form}
-      initialValues={{
-        layout: formLayout,
+      onFinish={(data) => {
+        // console.log("data", data);
+        setSearch(data);
       }}
     >
-      <Form.Item label="Field A">
-        <Input placeholder="Nhập..." />
+      <Form.Item
+        label="Từ ngày"
+        style={{ marginBottom: "15px" }}
+        name="start"
+        rules={[{ required: true, message: "Please input your start!" }]}
+      >
+        <DatePicker />
       </Form.Item>
-      <Form.Item label="Field B">
-        <Input placeholder="Nhập..." />
+
+      <Form.Item
+        label="Đến ngày"
+        style={{ marginBottom: "15px" }}
+        name="end"
+        rules={[{ required: true, message: "Please input your end!" }]}
+      >
+        <DatePicker />
       </Form.Item>
+
       <Form.Item >
-        <Button type="primary">Tìm kiếm</Button>
+        <Button type="primary" htmlType="submit">Tìm kiếm</Button>
       </Form.Item>
     </Form>
   );
