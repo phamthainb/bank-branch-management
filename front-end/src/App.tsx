@@ -36,9 +36,9 @@ export default function App() {
           <Route path="/profile" exact>
             <Profile />
           </Route>
-          <Route path="/customer" exact>
-            <Accountmanagement />
-          </Route>
+          {/* <Route path="/customer" exact>
+            <SidebarCustomer />
+          </Route> */}
         </Switch>
       </Router>
       <GlobalLoadingScreen />

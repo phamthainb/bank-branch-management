@@ -5,33 +5,48 @@ import Title from "antd/lib/typography/Title";
 import { Link, useHistory } from "react-router-dom";
 import { SLogo } from "../Signup/styles";
 import { AiTwotoneBank } from "react-icons/ai";
-import { request, requestToken } from "../../api/axios";
-import { CustomerContext } from "src/common/context/CustomerContext";
+import { request, requestToken } from "../../api/axios"
+import API_URL from "src/api/url";
+import { ProfileContext } from "src/common/context/NavigatorContext";
+import { Alert } from "src/common/components/Alert";
 
 export default function Login() {
   const history = useHistory();
-  const { setCustomer } = useContext(CustomerContext);
+  const { data, setData } = useContext(ProfileContext)
+
   const onFinish = (values: any) => {
-    console.log("values: ", values);
     request({
       method: "POST",
-      url: "/auth/login",
+      url: API_URL.AUTH.LOGIN,
       data: values,
+    }).then((res) => {
+      localStorage.setItem("token", res?.data?.data)
+
+      // get profile
+      if (res?.data) {
+        Alert({
+          name: `${res?.data?.message}`,
+          icon: res?.data?.data ? "success" : "error",
+        });
+
+        if (res?.data?.data) {
+          requestToken({
+            method: "GET",
+            url: API_URL.AUTH.PROFILE
+          }).then((res) => {
+            setData(res?.data?.data)
+            const role = data?.user?.role;
+            history.push(`bank/${role?.toLowerCase()}`)
+          })
+        }
+      }
+    }).catch((err) => {
+      console.log("err: ", err);
     })
       .then((res: any) => {
         console.log("res: ", res);
         localStorage.setItem("token", res.data.data);
         history.push("/");
-        // history.push("bank")
-
-        // ---
-        requestToken({
-          method: "GET",
-          url: "/auth/profile",
-          // data: values,
-        }).then((res: any) => {
-          setCustomer(res.data.data);
-        });
       })
       .catch((err: any) => {
         console.log("err: ", err);

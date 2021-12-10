@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -18,10 +19,10 @@ public class BaseEntity {
 
     @CreationTimestamp
     @Column(name = "created_at")
-    protected LocalDateTime createdAt;
+    protected Date createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
-    protected LocalDateTime updatedAt;
+    protected Date updatedAt;
 
 }

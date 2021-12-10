@@ -9,6 +9,11 @@ import org.springframework.data.jpa.repository.Query;
 public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
     public AccountEntity findByCode(String code);
 
+    //@Query("select a from AccountEntity a where a.code like %:code%")
+    public Page<AccountEntity> findAllByCodeContaining(String code, Pageable pageable);
+
     @Query("select a from AccountEntity a where a.customer.id = ?1")
     public Page<AccountEntity> findAllByCustomer(Long customerId, Pageable pageable);
+
+
 }

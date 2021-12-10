@@ -7,7 +7,7 @@ import { ThemeContext } from "styled-components";
 import { menu, roleAdmin, roleCustomer, roleStaff } from "./store/data";
 import { SNavigator, SHandleButton } from "./styles";
 import { AiTwotoneBank } from "react-icons/ai";
-import { SidebarStaffContext } from "src/common/context/SidebarStaffContext";
+import { SidebarStaffContext } from "src/common/context/Staff/SidebarStaffContext";
 import { SidebarCustomerContext } from "src/common/context/SidebarCustomerContext";
 import { SidebarAdminContext } from "src/common/context/SidebarAdminContext";
 
@@ -74,6 +74,7 @@ export default function Navigator({ role }: { role: string }) {
           ) : (
             roleAdmin.map((st, i) => {
               return (
+                <Link to={`${st.route}`}>
                 <Tooltip placement="right" title="">
                   <SHandleButton
                     active={indexAdmin === i}
@@ -90,6 +91,7 @@ export default function Navigator({ role }: { role: string }) {
                     <span>{st.name}</span>
                   </SHandleButton>
                 </Tooltip>
+                </Link>
               )
             })
           )
