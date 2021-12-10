@@ -50,6 +50,7 @@ public class StaffController {
 
         StaffEntity staffEntity = new StaffEntity();
         staffEntity.setAddress(createStaffDto.getAddress());
+        staffEntity.setStatus(true);
         staffEntity.setBirthday(createStaffDto.getBirthday());
         staffEntity.setCard_id(createStaffDto.getCard_id());
         staffEntity.setName(createStaffDto.getName());
