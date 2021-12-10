@@ -36,8 +36,12 @@ export default function Login() {
             method: "GET",
             url: API_URL.AUTH.PROFILE
           }).then((res) => {
+           // console.log("res", res);
+            
             setData(res?.data?.data)
-            const role = res?.data?.user?.role?.toLowerCase();
+            const role = res?.data?.data?.user?.role?.toLowerCase();
+           // console.log("role", role);
+            
             if (role) {
               setRole(role);
               history.push(`bank/${role}`)
