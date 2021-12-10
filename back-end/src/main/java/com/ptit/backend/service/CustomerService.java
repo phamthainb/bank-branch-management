@@ -11,7 +11,6 @@ import java.util.List;
 public interface CustomerService {
     public CustomerEntity createCustomer(CustomerEntity user);
     public CustomerEntity updateCustomer(CustomerEntity user);
-    public CustomerEntity getCustomer(String username);
     public CustomerEntity getCustomerById(long id);
-    public List<CustomerEntity> getCustomerList();
+    public Page<CustomerEntity> getCustomerList(Pageable pageable);
 }

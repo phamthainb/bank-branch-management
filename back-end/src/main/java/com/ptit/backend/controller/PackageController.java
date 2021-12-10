@@ -17,7 +17,6 @@ public class PackageController {
 
     @PostMapping(name = "")
     public ResponseObject create(@RequestBody PackageEntity packageEntity){
-        //System.out.println(accountPackageEntity.toString());
         if(packageEntity.getType().equals(PackageEntity.typePackage.payment) ||
                 packageEntity.getType().equals(PackageEntity.typePackage.saving)){
 
@@ -34,4 +33,20 @@ public class PackageController {
         List<PackageEntity> list = packageService.findAll();
         return ResponseObject.builder().status(HttpStatus.OK).message("").data(list).build();
     }
+
+    @PutMapping(value = "")
+    public ResponseObject update(@RequestBody PackageEntity packageEntity){
+        PackageEntity p = packageService.findById(packageEntity.getId());
+        // can update only field below
+        p.setName(packageEntity.getName());
+        p.setApr(packageEntity.getApr());
+
+        return ResponseObject.builder().status(HttpStatus.OK).message("Cập nhật gói thành công.").data(packageService.update(p)).build();
+    }
+
+    @DeleteMapping(value = "")
+    public ResponseObject delete(@RequestBody PackageEntity packageEntity){
+        return ResponseObject.builder().status(HttpStatus.OK).message("Xoá thành công.").data(packageService.delete(packageEntity.getId())).build();
+    }
+
 }

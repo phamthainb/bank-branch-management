@@ -1,7 +1,9 @@
 package com.ptit.backend.service;
 
+import com.ptit.backend.entity.CustomerEntity;
 import com.ptit.backend.entity.StaffEntity;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
 
@@ -14,5 +16,7 @@ public interface StaffService {
 
     public StaffEntity findById(Long id);
 
-    public List<StaffEntity> find(Pageable pageable);
+    public Page<StaffEntity> findAll(Pageable pageable);
+
+    public Page<CustomerEntity> findCustomerCreated(Long staffId, Pageable pageable);
 }

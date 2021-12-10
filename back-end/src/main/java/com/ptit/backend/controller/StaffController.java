@@ -3,16 +3,21 @@ package com.ptit.backend.controller;
 import com.ptit.backend.dto.CreateStaffDto;
 import com.ptit.backend.dto.MyUserDetails;
 import com.ptit.backend.entity.AdminEntity;
+import com.ptit.backend.entity.CustomerEntity;
 import com.ptit.backend.utils.ResponseObject;
 import com.ptit.backend.entity.StaffEntity;
 import com.ptit.backend.entity.UserEntity;
 import com.ptit.backend.service.StaffService;
 import com.ptit.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/staff")
@@ -65,5 +70,41 @@ public class StaffController {
 
         return ResponseObject.builder().status(HttpStatus.NOT_IMPLEMENTED).message("Tạo nhân viên thất bại.").build();
     }
+
+    @PutMapping(value = "")
+    public ResponseObject updateStaff(@RequestBody StaffEntity staffEntity){
+        StaffEntity s = staffService.findById(staffEntity.getId());
+        // can update only field below
+        s.setPosition(staffEntity.getPosition());
+        s.setName(staffEntity.getName());
+        s.setRate(staffEntity.getRate());
+        s.setBirthday(staffEntity.getBirthday());
+        s.setStatus(staffEntity.getStatus());
+        s.setAddress(staffEntity.getAddress());
+        s.setCard_id(staffEntity.getCard_id());
+        s.setExpYear(staffEntity.getExpYear());
+
+        StaffEntity staff = staffService.update(s);
+        return ResponseObject.builder().status(HttpStatus.OK).message("Cập nhật thông tin thành công.").data(staff).build();
+    }
+
+    @GetMapping(value = "")
+    public ResponseObject getDetail(@RequestParam Long id){
+        StaffEntity staff = staffService.findById(id);
+        return ResponseObject.builder().status(HttpStatus.OK).message("Lấy thông tin Staff thành công.").data(staff).build();
+    }
+
+    @GetMapping(value = "/list")
+    public ResponseObject getList(Pageable pageable){
+        Page<StaffEntity> staff = staffService.findAll(pageable);
+        return ResponseObject.builder().status(HttpStatus.OK).message("Lấy danh sách Staff thành công.").data(staff).build();
+    }
+
+    @GetMapping(value = "/customer")
+    public ResponseObject getListCustomer(Long staffId, Pageable pageable){
+        Page<CustomerEntity> c = staffService.findCustomerCreated(staffId, pageable);
+        return ResponseObject.builder().status(HttpStatus.OK).message("Lấy danh sách Customer tạo bởi Staff thành công.").data(c).build();
+    }
+
 
 }

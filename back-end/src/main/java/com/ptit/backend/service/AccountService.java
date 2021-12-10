@@ -2,6 +2,8 @@ package com.ptit.backend.service;
 
 import com.ptit.backend.dto.*;
 import com.ptit.backend.entity.AccountEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 
@@ -11,10 +13,13 @@ public interface AccountService {
     public AccountEntity update(AccountEntity accountEntity);
 
     // detail information of an account
-    public AccountEntity findOne(Long accountId);
+    public AccountEntity findById(Long id);
+
+    // get list account
+    public Page<AccountEntity> getList(Pageable pageable);
 
     // get list account of an Customer
-    public ArrayList<AccountEntity> getList(Long customerId);
+    public Page<AccountEntity> getCustomerAccount(Long customerId, Pageable pageable);
 
     // recharge
     public boolean recharge(RechargeDto data);
@@ -25,5 +30,7 @@ public interface AccountService {
 
     public boolean pay(PayDto data);
 
-    public boolean withdraw(AccountEntity account);
+    public boolean withdrawSavingInterest(AccountEntity account);
+
+    public boolean cancelSaving(AccountEntity account);
 }

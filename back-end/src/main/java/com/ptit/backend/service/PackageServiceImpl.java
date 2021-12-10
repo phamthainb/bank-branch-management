@@ -18,6 +18,11 @@ public class PackageServiceImpl implements PackageService {
     }
 
     @Override
+    public PackageEntity findById(Long id) {
+        return packageRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public PackageEntity create(PackageEntity packageEntity) {
         return packageRepository.save(packageEntity);
     }
