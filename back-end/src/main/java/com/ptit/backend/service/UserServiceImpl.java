@@ -2,6 +2,9 @@ package com.ptit.backend.service;
 
 import com.ptit.backend.dto.MyUserDetails;
 import com.ptit.backend.entity.UserEntity;
+import com.ptit.backend.repository.AdminRepository;
+import com.ptit.backend.repository.CustomerRepository;
+import com.ptit.backend.repository.StaffRepository;
 import com.ptit.backend.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,6 +20,9 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final StaffRepository staffRepository;
+    private final CustomerRepository customerRepository;
+    private final AdminRepository adminRepository;
 
     @Override
     public MyUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -46,5 +52,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity findUser(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public Object getProfile(UserEntity user) {
+        String role = user.getRole();
+        if(role.equals(UserEntity.Roles.ADMIN)){
+            return adminRepository.findAdminEntityByUser_Id(user.getId());
+        }
+        if(role.equals(UserEntity.Roles.CUSTOMER)){
+            return customerRepository.findCustomerEntityByUser_Id(user.getId());
+        }
+        if(role.equals(UserEntity.Roles.STAFF)){
+            return staffRepository.findStaffEntityByUser_Id(user.getId());
+        }
+        return null;
     }
 }

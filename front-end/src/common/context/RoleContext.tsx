@@ -10,7 +10,7 @@ export const RoleContext = createContext<IRoleContext>(
 );
 
 const RoleProvider = ({ children }: { children: ReactNode }) => {
-  const [role, setRole] = useState('staff');
+  const [role, setRole] = useState('admin');
 
   return (
     <RoleContext.Provider value={{ role, setRole }}>

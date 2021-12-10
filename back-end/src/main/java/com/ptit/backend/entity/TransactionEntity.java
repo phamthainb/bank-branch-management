@@ -17,6 +17,7 @@ public class TransactionEntity extends BaseEntity{
     public final class type {
         public static final String IN = "IN";
         public static final String OUT = "OUT";
+        public static final String PAY = "PAY";
     };
 
     @Column(name = "amount")
@@ -30,10 +31,10 @@ public class TransactionEntity extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "id_account_from")
-    private AccountEntity account_in;
+    private AccountEntity account_out; // vao
 
     @ManyToOne
     @JoinColumn(name = "id_account_to")
-    private AccountEntity account_out;
+    private AccountEntity account_in;// ra
 
 }

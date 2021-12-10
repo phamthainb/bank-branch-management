@@ -4,7 +4,3 @@
 /node_modules
 
 # production
-/build
-
-# env
-.env

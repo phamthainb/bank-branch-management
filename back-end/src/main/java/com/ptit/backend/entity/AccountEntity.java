@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "accounts")
@@ -20,7 +21,10 @@ public class AccountEntity extends BaseEntity{
     private float balance;
 
     @Column(name="balance_saving")
-    private float balance_saving;
+    private float balance_saving; // tien gui
+
+    @Column(name="balance_interest")
+    private float balance_interest; // lai hang thang
 
     @Column(name = "status") // when lock cannot: saving, transfer,.....
     private Boolean status;
@@ -33,8 +37,10 @@ public class AccountEntity extends BaseEntity{
     @JoinColumn(name = "id_customer")
     private CustomerEntity customer;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_account_package", referencedColumnName = "id")
-    private AccountPackageEntity accountPackage;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_package", referencedColumnName = "id")
+    private PackageEntity aPackage;
 
+    @Column(name = "start_package")
+    private Date start_package;
 }

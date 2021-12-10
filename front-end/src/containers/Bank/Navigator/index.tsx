@@ -74,6 +74,7 @@ export default function Navigator({ role }: { role: string }) {
           ) : (
             roleAdmin.map((st, i) => {
               return (
+                <Link to={`${st.route}`}>
                 <Tooltip placement="right" title="">
                   <SHandleButton
                     active={indexAdmin === i}
@@ -90,6 +91,7 @@ export default function Navigator({ role }: { role: string }) {
                     <span>{st.name}</span>
                   </SHandleButton>
                 </Tooltip>
+                </Link>
               )
             })
           )

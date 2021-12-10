@@ -7,4 +7,6 @@ public interface UserService extends UserDetailsService {
     public UserEntity create(UserEntity user);
     public UserEntity update(UserEntity user);
     public UserEntity findUser(String username);
+
+    public Object getProfile(UserEntity user);
 }
