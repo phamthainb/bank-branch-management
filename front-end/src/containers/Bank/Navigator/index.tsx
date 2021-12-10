@@ -1,12 +1,7 @@
 import { Dropdown, Menu, Tooltip } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
 import { useContext } from "react";
-import {
-  FaRegUser,
-} from "react-icons/fa";
-import { FiPhoneCall } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import { NavigatorContext } from "src/common/context/NavigatorContext";
 import { ToggleSidebarContext } from "src/common/context/ToggleSidebarContext";
 import { ThemeContext } from "styled-components";
 import { menu, roleAdmin, roleCustomer, roleStaff } from "./store/data";
@@ -35,22 +30,24 @@ export default function Navigator({ role }: { role: string }) {
           role === "staff" ? (
             roleStaff.map((st, i) => {
               return (
-                <Tooltip placement="right" title="">
-                  <SHandleButton
-                    active={indexStaff === i}
-                    onClick={() => {
-                      setIndexStaff(i);
-                      toggleSidebar && toggleSidebar(true);
-                    }}
-                  >
-                    <div className="img">
-                      {
-                        st.icon
-                      }
-                    </div>
-                    <span>{st.name}</span>
-                  </SHandleButton>
-                </Tooltip>
+                <Link to={`${st.route}`}>
+                  <Tooltip placement="right" title="">
+                    <SHandleButton
+                      active={indexStaff === i}
+                      onClick={() => {
+                        setIndexStaff(i);
+                        toggleSidebar && toggleSidebar(true);
+                      }}
+                    >
+                      <div className="img">
+                        {
+                          st.icon
+                        }
+                      </div>
+                      <span>{st.name}</span>
+                    </SHandleButton>
+                  </Tooltip>
+                </Link>
               )
             })
           ) : role === "customer" ? (
