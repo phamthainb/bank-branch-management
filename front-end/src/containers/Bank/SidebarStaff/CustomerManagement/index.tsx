@@ -1,6 +1,7 @@
 import { Input } from "antd";
 import React, { useContext } from "react";
 import { FaChevronLeft } from "react-icons/fa";
+import WrapContent from "src/common/components/WrapContent";
 import { NavigatorContext } from "src/common/context/NavigatorContext";
 import { ToggleSidebarContext } from "src/common/context/ToggleSidebarContext";
 import { ThemeContext } from "styled-components";
@@ -16,16 +17,18 @@ export default function CustomerManagement() {
   const { setIndex } = useContext(NavigatorContext);
 
   return (
-    <SInnerSidebar>
-      <div className="top">
-        <h3
-          className="header"
-          onClick={() => toggleSidebar && toggleSidebar(false)}
-        >
-          <FaChevronLeft color={theme.text.main} size={16} />
-          Quản lý khách hàng
-        </h3>
-      </div>
-    </SInnerSidebar>
+    <WrapContent title="Quản lý khách hàng">
+      <SInnerSidebar>
+        <div className="top">
+          <h3
+            className="header"
+            onClick={() => toggleSidebar && toggleSidebar(false)}
+          >
+            <FaChevronLeft color={theme.text.main} size={16} />
+
+          </h3>
+        </div>
+      </SInnerSidebar>
+    </WrapContent>
   );
 }
