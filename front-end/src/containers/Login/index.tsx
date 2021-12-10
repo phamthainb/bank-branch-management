@@ -1,28 +1,41 @@
-import React from "react";
+import React, { useContext } from "react";
 import { SLogin } from "./styles";
 import { Button, Divider, Form, Input } from "antd";
 import Title from "antd/lib/typography/Title";
 import { Link, useHistory } from "react-router-dom";
 import { SLogo } from "../Signup/styles";
 import { AiTwotoneBank } from "react-icons/ai";
-import { request } from "../../api/axios"
+import { request, requestToken } from "../../api/axios";
+import { CustomerContext } from "src/common/context/CustomerContext";
 
 export default function Login() {
   const history = useHistory();
+  const { setCustomer } = useContext(CustomerContext);
   const onFinish = (values: any) => {
     console.log("values: ", values);
     request({
       method: "POST",
       url: "/auth/login",
       data: values,
-    }).then((res: any) => {
-      console.log("res: ", res);
-
-      // history.push("bank")
-
-    }).catch((err: any) => {
-      console.log("err: ", err);
     })
+      .then((res: any) => {
+        console.log("res: ", res);
+        localStorage.setItem("token", res.data.data);
+        history.push("/");
+        // history.push("bank")
+
+        // ---
+        requestToken({
+          method: "GET",
+          url: "/auth/profile",
+          // data: values,
+        }).then((res: any) => {
+          setCustomer(res.data.data);
+        });
+      })
+      .catch((err: any) => {
+        console.log("err: ", err);
+      });
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -33,10 +46,7 @@ export default function Login() {
     <SLogin>
       <div className="wrapper">
         <SLogo>
-          <AiTwotoneBank
-            size={25}
-            color="white"
-          />
+          <AiTwotoneBank size={25} color="white" />
         </SLogo>
         <Title level={4}>Login</Title>
         <Form
@@ -72,7 +82,10 @@ export default function Login() {
           </Form.Item>
 
           <Divider plain>
-            or <Link to="/signup"><span style={{ fontWeight: 600 }}>Register</span></Link>
+            or{" "}
+            <Link to="/signup">
+              <span style={{ fontWeight: 600 }}>Register</span>
+            </Link>
           </Divider>
         </Form>
       </div>

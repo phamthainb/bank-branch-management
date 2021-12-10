@@ -9,6 +9,7 @@ import SidebarStaffProvider from "./SidebarStaffContext";
 import SidebarCustomerProvider from "./SidebarCustomerContext";
 import SidebarAdminProvider from "./SidebarAdminContext";
 import RoleProvider from "./RoleContext";
+import CustomerProvider from "./CustomerContext";
 
 export default function MyProvider({ children }: { children: ReactNode }) {
   return (
@@ -18,17 +19,17 @@ export default function MyProvider({ children }: { children: ReactNode }) {
           <RoleProvider>
             <NavigatorProvider>
               <ProfileProvider>
-                <SidebarAdminProvider>
-                  <SidebarStaffProvider>
-                    <SidebarCustomerProvider>
-                      <ToggleSidebarProvider>
-                        <ReactsProvider>
-                          {children}
-                        </ReactsProvider>
-                      </ToggleSidebarProvider>
-                    </SidebarCustomerProvider>
-                  </SidebarStaffProvider>
-                </SidebarAdminProvider>
+                <CustomerProvider>
+                  <SidebarAdminProvider>
+                    <SidebarStaffProvider>
+                      <SidebarCustomerProvider>
+                        <ToggleSidebarProvider>
+                          <ReactsProvider>{children}</ReactsProvider>
+                        </ToggleSidebarProvider>
+                      </SidebarCustomerProvider>
+                    </SidebarStaffProvider>
+                  </SidebarAdminProvider>
+                </CustomerProvider>
               </ProfileProvider>
             </NavigatorProvider>
           </RoleProvider>
