@@ -4,7 +4,8 @@ export const SInnerSidebar = styled.div`
   display: flex;
   flex-direction: column;
   max-height: 100%;
-
+  padding: 0 24px;
+  
   .top {
     padding: 15px;
     display: flex;
