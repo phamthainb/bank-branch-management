@@ -31,16 +31,16 @@ export default function SidebarCustomer() {
       )}
       <SSidebar open={open}>
         <Switch>
-          <Route path={`${router.path}`}>
+          <Route path={`${router.path}/account`}>
             <Accountmanagement />
           </Route>
-          <Route path={`${router.path}/2`}>
+          <Route path={`${router.path}/pay`}>
             <Payment />
           </Route>
-          <Route path={`${router.path}/3`}>
+          <Route path={`${router.path}/history`}>
             <TransactionHistory />
           </Route>
-          <Route path={`${router.path}/4`}>
+          <Route path={`${router.path}/update`}>
             <UpdateProfile />
           </Route>
         </Switch>

@@ -41,30 +41,24 @@ export const roleCustomer: IRole[] = [
   {
     name: "Quản lý tài khoản",
     icon: <MdSupervisorAccount />,
-    route: "/",
-    component: <Accountmanagement />
-  },
-  {
-    name: "Nạp tiền",
-    route: "/",
-    icon: <FaDollarSign />,
+    route: "/bank/customer/account",
     component: <Accountmanagement />
   },
   {
     name: "Chuyển tiền",
-    route: "/",
+    route: "/bank/customer/pay",
     icon: <FaMoneyBillWave />,
     component: <Accountmanagement />
   },
   {
     name: "Lịch sử giao dịch",
-    route: "/",
+    route: "/bank/customer/history",
     icon: <MdSwapHoriz />,
     component: <Accountmanagement />
   },
   {
     name: "Cập nhật thông tin",
-    route: "/",
+    route: "/bank/customer/update",
     icon: <MdAssignmentInd />,
     component: <Accountmanagement />
   },

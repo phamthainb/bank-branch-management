@@ -48,14 +48,14 @@ export default function Login() {
     }).catch((err) => {
       console.log("err: ", err);
     })
-      .then((res: any) => {
-        console.log("res: ", res);
-        localStorage.setItem("token", res.data.data);
-        history.push("/");
-      })
-      .catch((err: any) => {
-        console.log("err: ", err);
-      });
+      // .then((res: any) => {
+      //   console.log("res: ", res);
+      //   localStorage.setItem("token", res.data.data);
+      //   history.push("/");
+      // })
+      // .catch((err: any) => {
+      //   console.log("err: ", err);
+      // });
   };
 
   const onFinishFailed = (errorInfo: any) => {
