@@ -20,7 +20,7 @@ export default function App() {
           <Route path="/" exact>
             <Onboarding />
           </Route>
-          <Route path="/bank" exact>
+          <Route path="/bank">
             <Bank />
           </Route>
           <Route path="/signup" exact>

@@ -37,7 +37,7 @@ export default function Profile() {
           style={{ display: "none" }}
         />
       </label>
-      <div className="name">@sonht</div>
+      <div className="name">@account</div>
       <Button style={{ minWidth: "100px" }} type="primary">
         Save
       </Button>
