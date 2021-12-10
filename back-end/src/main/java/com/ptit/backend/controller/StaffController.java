@@ -6,6 +6,7 @@ import com.ptit.backend.dto.MyUserDetails;
 import com.ptit.backend.dto.ResSalaryDto;
 import com.ptit.backend.entity.AdminEntity;
 import com.ptit.backend.entity.CustomerEntity;
+import com.ptit.backend.repository.StaffRepository;
 import com.ptit.backend.utils.ResponseObject;
 import com.ptit.backend.entity.StaffEntity;
 import com.ptit.backend.entity.UserEntity;
@@ -32,6 +33,9 @@ public class StaffController {
     StaffService staffService;
 
     @Autowired
+    StaffRepository staffRepository;
+
+    @Autowired
     UserService userService;
 
     @Autowired
@@ -50,6 +54,7 @@ public class StaffController {
 
         StaffEntity staffEntity = new StaffEntity();
         staffEntity.setAddress(createStaffDto.getAddress());
+        staffEntity.setStatus(true);
         staffEntity.setBirthday(createStaffDto.getBirthday());
         staffEntity.setCard_id(createStaffDto.getCard_id());
         staffEntity.setName(createStaffDto.getName());
@@ -100,8 +105,14 @@ public class StaffController {
     }
 
     @GetMapping(value = "/list")
-    public ResponseObject getList(Pageable pageable){
-        Page<StaffEntity> staff = staffService.findAll(pageable);
+    public ResponseObject getList(@RequestParam(required = false) String name, Pageable pageable){
+        Page<StaffEntity> staff = null;
+        if(name != null){
+             staff = staffRepository.findStaffEntityByNameContaining(name, pageable);
+        }
+        else{
+            staff = staffRepository.findAll(pageable);
+        }
         return ResponseObject.builder().status(HttpStatus.OK).message("Lấy danh sách Staff thành công.").data(staff).build();
     }
 

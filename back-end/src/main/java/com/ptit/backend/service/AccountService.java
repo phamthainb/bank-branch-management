@@ -16,7 +16,7 @@ public interface AccountService {
     public AccountEntity findById(Long id);
 
     // get list account
-    public Page<AccountEntity> getList(Pageable pageable);
+    public Page<AccountEntity> getList(String code, Pageable pageable);
 
     // get list account of an Customer
     public Page<AccountEntity> getCustomerAccount(Long customerId, Pageable pageable);

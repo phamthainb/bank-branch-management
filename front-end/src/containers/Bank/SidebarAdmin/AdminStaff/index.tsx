@@ -7,29 +7,33 @@ import { Table, Tag, Space, Form, Input, Button, Radio } from 'antd';
 import { requestToken } from "src/api/axios";
 import { Drawer, List, Avatar, Divider, Col, Row } from 'antd';
 import CreateStaff from "./CreateStaff";
+import EditStaff from "./EditStaff";
+import { clearParams } from "src/common/helper";
 
 export default function AdminStaff() {
   const { theme } = useContext(ThemeContext);
-  const onSearch = (value: any) => {
-    console.log(value);
-  };
 
   const { toggleSidebar } = useContext(ToggleSidebarContext);
 
-
   // data 
   const [state, setstate] = useState<any>();
+  const[reload, setReload] = useState(false);
+  const [search, setSearch] = useState<any>({});
 
+  const mustReload = () => {
+    setReload(!reload);
+  }
+ 
   useEffect(() => {
-    requestToken({ method: "GET", url: "/staff/list" }).then((res) => {
-      console.log(res.data.data);
+    requestToken({ method: "GET", url: `/staff/list?${new URLSearchParams(clearParams(search)).toString()}` }).then((res) => {
+      //console.log(res.data.data);
       let resData = res.data.data;
-
       setstate({ data: resData.content })
-
     }).catch()
-  }, [])
+  }, [reload, search])
 
+  // tao nhan vien 
+  const [modal, setModal] = useState(false)
   return (
     <SInnerSidebar>
       <div className="top">
@@ -45,45 +49,41 @@ export default function AdminStaff() {
 
       <div className="search">
         <h3>Tìm kiếm </h3>
-        <FormLayoutDemo />
+        <FormSearch onSearch={setSearch} />
       </div>
       <Divider />
 
       <div className="handle">
-        <Button type="primary">Thêm mới </Button>
-        <CreateStaff />
+        <Button type="primary" onClick={() => setModal(!modal)} >Thêm mới</Button>
+        <CreateStaff open={modal} setOpen={setModal} callback = {() => {mustReload()}} />
       </div>
       <Divider />
 
       <div className="body">
-        <h3>Bảng danh sách</h3>
-        {/* <Table columns={columns} dataSource={state?.data ?? []} /> */}
+        <h3>Bảng danh sách Nhân viên</h3>
         <ListData data={state?.data ?? []} />
       </div>
     </SInnerSidebar>
   );
 }
 
-const FormLayoutDemo = () => {
+const FormSearch = ({onSearch} : any) => {
   const [form] = Form.useForm();
-  const [formLayout, setFormLayout] = useState('inline');
 
   return (
     <Form
       layout={"inline"}
       form={form}
-      initialValues={{
-        layout: formLayout,
+      onFinish={(data) => {
+        console.log("data", data);
+        onSearch(data);
       }}
     >
-      <Form.Item label="Field A">
-        <Input placeholder="Nhập..." />
-      </Form.Item>
-      <Form.Item label="Field B">
+      <Form.Item label="Tên nhân viên" name="name">
         <Input placeholder="Nhập..." />
       </Form.Item>
       <Form.Item >
-        <Button type="primary">Submit</Button>
+        <Button type="primary" htmlType="submit">Tìm kiếm</Button>
       </Form.Item>
     </Form>
   );
@@ -106,10 +106,9 @@ const ListData = ({ data }: any) => {
       setState({
         visible: true,
       });
-      console.log(res.data.data);
+      //console.log(res.data.data);
       setStaff(res.data.data);
     })
-
   };
 
   const onClose = () => {
@@ -117,6 +116,8 @@ const ListData = ({ data }: any) => {
       visible: false,
     });
   };
+  // update stafff 
+  const [update, setUpdate] = useState(0);
 
   return (
     <>
@@ -130,14 +131,18 @@ const ListData = ({ data }: any) => {
               // eslint-disable-next-line jsx-a11y/anchor-is-valid
               <a onClick={() => showDrawer(item.id)} key={`a-${item.id}`}>
                 Xem chi tiết
-              </a>
+              </a>,
+              <a onClick={() => setUpdate(item.id)} key={`a-${item.id}`}>
+                Chỉnh sửa
+              </a>,
+
             ]}
           >
             <List.Item.Meta
               avatar={
                 <Avatar src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png" />
               }
-              title={<a href="https://ant.design/index-cn">{item.name}</a>}
+              title={<a>{item.name}</a>}
               description={item.address}
             />
           </List.Item>
@@ -177,8 +182,8 @@ const ListData = ({ data }: any) => {
           </Col>
           <Col span={12}>
             <DescriptionItem title="Ngày sinh" content={staff.birthday} />
-          </Col> 
-          </Row>
+          </Col>
+        </Row>
         <Divider />
 
         <Row>
@@ -201,6 +206,9 @@ const ListData = ({ data }: any) => {
         <Divider />
 
       </Drawer>}
+
+      {update ? <EditStaff open={update} setOpen={setUpdate} /> : ""}
+
     </>
   );
 }
