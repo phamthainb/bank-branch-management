@@ -40,5 +40,5 @@ public class StaffEntity extends BaseEntity{
     private String position;
 
     @Column(name = "status")
-    private boolean status;
+    private Boolean status;
 }

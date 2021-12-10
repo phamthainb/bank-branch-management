@@ -23,18 +23,10 @@ public class CustomerServiceImpl implements CustomerService{
     public CustomerEntity createCustomer(CustomerEntity user) {
         return customerRepository.save(user);
     }
-//    public StaffEntity create(StaffEntity s) {
-//        return staffRepository.save(s);
-//    }
 
     @Override
     public CustomerEntity updateCustomer(CustomerEntity user) {
         return customerRepository.save(user);
-    }
-
-    @Override
-    public CustomerEntity getCustomer(String username) {
-        return null;
     }
 
     @Override
@@ -48,12 +40,8 @@ public class CustomerServiceImpl implements CustomerService{
         return customer;
     }
 
-//    @Override
-//    public Page<CustomerEntity> getCustomerList(Pageable pageable) {
-//        return null;
-//    }
     @Override
-    public List<CustomerEntity> getCustomerList() {
-        return customerRepository.findAll();
+    public Page<CustomerEntity> getCustomerList(Pageable pageable) {
+        return customerRepository.findAll(pageable);
     }
 }

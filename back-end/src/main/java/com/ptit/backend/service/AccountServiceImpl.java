@@ -5,6 +5,8 @@ import com.ptit.backend.entity.*;
 import com.ptit.backend.repository.*;
 import com.ptit.backend.utils.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -72,17 +74,22 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountEntity update(AccountEntity accountEntity) {
-        return null;
+        return accountRepository.save(accountEntity);
     }
 
     @Override
-    public AccountEntity findOne(Long accountId) {
-        return null;
+    public AccountEntity findById(Long id) {
+        return accountRepository.findById(id).orElse(null);
     }
 
     @Override
-    public ArrayList<AccountEntity> getList(Long customerId) {
-        return null;
+    public Page<AccountEntity> getList(Pageable pageable) {
+        return accountRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<AccountEntity> getCustomerAccount(Long customerId, Pageable pageable) {
+        return accountRepository.findAllByCustomer(customerId, pageable);
     }
 
     @Override
@@ -243,8 +250,54 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean withdraw(AccountEntity account) {
+    @Transactional
+    public boolean withdrawSavingInterest(AccountEntity account) {
+        AccountEntity a = accountRepository.findById(account.getId()).orElse(null);
 
-        return false;
+        if(a == null){
+            throw ApiResponse.builder().status(HttpStatus.NOT_FOUND).message("Không tìm thấy tài khoản.").build();
+        }
+
+        a.setBalance(a.getBalance() + a.getBalance_interest());
+        a.setBalance_interest(0);
+        accountRepository.save(a);
+
+        // insert transaction out
+        TransactionEntity transactionOut = new TransactionEntity();
+        transactionOut.setAccount_in(a);
+        transactionOut.setAmount(a.getBalance_interest());
+        transactionOut.setType(TransactionEntity.type.IN);
+        transactionOut.setNote("Rút tiền lãi tiết kiệm " + a.getBalance_interest());
+        transactionRepository.save(transactionOut);
+
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public boolean cancelSaving(AccountEntity account) {
+        AccountEntity a = accountRepository.findById(account.getId()).orElse(null);
+
+        if(a == null){
+            throw ApiResponse.builder().status(HttpStatus.NOT_FOUND).message("Không tìm thấy tài khoản.").build();
+        }
+
+        a.setBalance(a.getBalance() + a.getBalance_saving() + a.getBalance_interest());
+        a.setBalance_interest(0);
+        a.setBalance_saving(0);
+        a.setAPackage(null);
+        a.setStart_package(null);
+
+        accountRepository.save(a);
+
+        // insert transaction out
+        TransactionEntity transactionOut = new TransactionEntity();
+        transactionOut.setAccount_in(a);
+        transactionOut.setAmount(a.getBalance_interest());
+        transactionOut.setType(TransactionEntity.type.IN);
+        transactionOut.setNote("Huỷ gói tiết kiệm và rút lãi " + a.getBalance_interest());
+        transactionRepository.save(transactionOut);
+
+        return true;
     }
 }

@@ -7,6 +7,8 @@ import java.util.List;
 public interface PackageService {
     public List<PackageEntity> findAll();
 
+    public PackageEntity findById(Long id);
+
     public PackageEntity create(PackageEntity packageEntity);
 
     public PackageEntity update(PackageEntity packageEntity);
