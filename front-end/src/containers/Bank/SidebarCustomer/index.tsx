@@ -5,7 +5,11 @@ import { NavigatorContext } from "src/common/context/NavigatorContext";
 import { SidebarCustomerContext } from "src/common/context/SidebarCustomerContext";
 import { ToggleSidebarContext } from "src/common/context/ToggleSidebarContext";
 import Accountmanagement from "./Accountmanagement";
+import Payment from "./Payment";
+import Recharge from "./Recharge";
 import { SSidebar } from "./styles";
+import TransactionHistory from "./TransactionHistory";
+import UpdateProfile from "./UpdateProfile";
 
 export default function SidebarCustomer() {
   const { indexCustomer } = useContext(SidebarCustomerContext);
@@ -15,7 +19,7 @@ export default function SidebarCustomer() {
 
   useEffect(() => {
     toggleSidebar && toggleSidebar(false);
-  }, [router, toggleSidebar])
+  }, [router, toggleSidebar]);
 
   return (
     <>
@@ -28,6 +32,10 @@ export default function SidebarCustomer() {
       )}
       <SSidebar open={open}>
         {indexCustomer === 0 && <Accountmanagement />}
+        {indexCustomer === 1 && <Recharge />}
+        {indexCustomer === 2 && <Payment />}
+        {indexCustomer === 3 && <TransactionHistory />}
+        {indexCustomer === 4 && <UpdateProfile />}
       </SSidebar>
     </>
   );

@@ -1,6 +1,6 @@
 import { IconType } from "react-icons";
-import { FaRegUser } from "react-icons/fa";
-import { MdSupervisorAccount } from "react-icons/md";
+import { FaDollarSign, FaMoneyBillWave, FaMoneyCheckAlt, FaRegUser } from "react-icons/fa";
+import { MdAssignmentInd, MdSupervisorAccount, MdSwapHoriz } from "react-icons/md";
 
 export const menu = [
   {
@@ -30,9 +30,21 @@ export const roleCustomer: IRole[] = [
     icon: <MdSupervisorAccount />,
   },
   {
-    name: "Quản lý người dùng",
-    icon: <MdSupervisorAccount />,
-  }
+    name: "Nạp tiền",
+    icon: <FaDollarSign />,
+  },
+  {
+    name: "Chuyển tiền",
+    icon: <FaMoneyBillWave />,
+  },
+  {
+    name: "Lịch sử giao dịch",
+    icon: <MdSwapHoriz />,
+  },
+  {
+    name: "Cập nhật thông tin",
+    icon: <MdAssignmentInd />,
+  },
 ]
 export const roleAdmin: IRole[] = [
   {
