@@ -30,7 +30,7 @@ export default function SidebarAdmin() {
       )}
       <SSidebar open={open}>
         <Switch>
-        <Route path={`${router.path}/staff`} >
+        <Route path={`${router.path}`} exact >
           <AdminStaff />
         </Route>
         <Route path={`${router.path}/customer`} >

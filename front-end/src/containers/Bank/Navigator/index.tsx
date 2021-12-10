@@ -19,7 +19,7 @@ export default function Navigator() {
   const { indexCustomer, setIndexCustomer } = useContext(SidebarCustomerContext);
   const { indexAdmin, setIndexAdmin } = useContext(SidebarAdminContext);
   const { toggleSidebar } = useContext(ToggleSidebarContext);
-
+//let role = "admin";
   return (
     <SNavigator>
       <div className="logo">

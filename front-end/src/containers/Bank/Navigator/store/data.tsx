@@ -56,7 +56,7 @@ export const roleAdmin: IRole[] = [
   {
     name: "Quản lý Nhân viên",
     icon: <FaRegUser />,
-    route: "/bank/admin/staff",
+    route: "/bank/admin",
     component: <Accountmanagement />
   },
   {
