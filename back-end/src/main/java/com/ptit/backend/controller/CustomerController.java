@@ -100,6 +100,7 @@ public class CustomerController {
         c.setBirthday(customer.getBirthday());
         c.setName(customer.getName());
         c.setCard_id(customer.getCard_id());
+        c.setStatus(customer.getStatus());
 
         return ResponseObject.builder().status(HttpStatus.OK).message("Cập nhật thông tin thành công.").data(customerService.updateCustomer(c)).build();
     }
