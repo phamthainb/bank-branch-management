@@ -11,7 +11,8 @@ interface ITable {
   time: any;
   type: any;
   amount: any;
-  opposite: any;
+  from: any;
+  to: any;
   content: any;
 }
 export default function TransactionHistory() {
@@ -21,6 +22,7 @@ export default function TransactionHistory() {
   const [listTransaction, setListTransaction] = useState<any[]>([]);
   const { setCustomer } = useContext(CustomerContext);
   const [listAccount, setListAccount] = useState<any[]>([]);
+  const [currentAccount, setCurrentAccount] = useState<any>("");
   const columns = [
     {
       title: "Thời gian",
@@ -33,14 +35,19 @@ export default function TransactionHistory() {
       key: "type",
     },
     {
+      title: "Tài khoản nguồn",
+      dataIndex: "from",
+      key: "from",
+    },
+    {
+      title: "Tài khoản đích",
+      dataIndex: "to",
+      key: "to",
+    },
+    {
       title: "Số tiền",
       dataIndex: "amount",
       key: "amount",
-    },
-    {
-      title: "Từ/Đến tài khoản",
-      dataIndex: "opposite",
-      key: "opposite",
     },
     {
       title: "Nội dung",
@@ -60,10 +67,12 @@ export default function TransactionHistory() {
             ? "Nạp tiền"
             : item.type === "OUT"
             ? "Rút tiền"
-            : "Chuyển khoản",
+            : item.account_in.id===currentAccount
+            ? "Chuyển khoản đến" : "Chuyển khoản đi",
         amount: item?.amount,
-        opposite:
-          item.type === "PAY" ? item?.account_in?.code || item?.account_out?.code : "",
+        from: item?.account_out?.code ,
+        to: item?.account_in?.code ,
+          // item.type === "PAY" ? item?.account_in?.code || item?.account_out?.code : "",
         content: item?.note,
       });
     });
@@ -94,6 +103,7 @@ export default function TransactionHistory() {
   }, [setCustomer]);
 
   const onChange = (value: any) => {
+    setCurrentAccount(value)
     requestToken({
       method: "GET",
       url: "/transaction/account",

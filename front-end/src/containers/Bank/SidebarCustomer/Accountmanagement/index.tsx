@@ -7,6 +7,8 @@ import { ToggleSidebarContext } from "src/common/context/ToggleSidebarContext";
 import { ThemeContext } from "styled-components";
 import AddPackage from "./AddPackage";
 import RechargePackage from "./RechargePackage";
+import ModalCancelPackage from "./ModalCancelPackage";
+import ModalTakeInterest from "./ModalTakeInterest";
 import { SInnerSidebar } from "./styles";
 
 interface ITable {
@@ -19,17 +21,20 @@ interface ITable {
 export default function Accountmanagement() {
   const { theme } = useContext(ThemeContext);
   const { toggleSidebar } = useContext(ToggleSidebarContext);
-  const { setCustomer } = useContext(CustomerContext);
+  const { customer, setCustomer } = useContext(CustomerContext);
   const [dataSource, setDataSource] = useState<ITable[]>([]);
   const [reload, setreload] = useState(true);
-  
+
   const musReload = () => {
     setreload(!reload);
   }
+  const [modalnapPackage, setModalnap] = useState(false);
+
   // modal
   const [currentAccount, setCurrentAccount] = useState();
   const [modalDkPackage, setModalDK] = useState(false);
-  const [modalnapPackage, setModalnap] = useState(false);
+  const [modalCancelPackage, setModalCancelPackage] = useState(false);
+  const [modalTakeInterest, setModalTakeInterest] = useState(false);
 
   const columns = [
     {
@@ -62,31 +67,53 @@ export default function Accountmanagement() {
       key: "balance_interest",
       render: (text: string, record: any) => {
         //console.log("record", record);
-        return record?.balance_interest ?? "0"
-      }
+        return record?.balance_interest ?? "0";
+      },
     },
     {
       title: "Chức năng",
       dataIndex: "handle",
       key: "hanlde",
       render: (text: string, record: any) => {
-        return <>
-          {record.apackage ? <>
-            <Button>Huỷ gói </Button>  
-            <Button>Rút lãi </Button>
-            <Button onClick={() => {
-            setCurrentAccount(record);
-            setModalnap(true);
-          }} >Nạp thêm tiền tiết kiệm </Button>
-          </> : 
-          <Button onClick={() => {
-            setCurrentAccount(record);
-            setModalDK(true);
-          }} >Đăng ký gói </Button>}
-        </>
-      }
+        return (
+          <>
+            {record.apackage ? (
+              <>
+                <Button
+                  onClick={() => {
+                    setCurrentAccount(record);
+                    setModalCancelPackage(true);
+                  }}
+                >
+                  Huỷ gói{" "}
+                </Button>
+                <Button
+                  onClick={() => {
+                    setCurrentAccount(record);
+                    setModalTakeInterest(true);
+                  }}
+                >
+                  Rút lãi{" "}
+                </Button>
+                <Button onClick={() => {
+                  setCurrentAccount(record);
+                  setModalnap(true);
+                }}>Nạp thêm tiền tiết kiệm </Button>
+              </>
+            ) : (
+              <Button
+                onClick={() => {
+                  setCurrentAccount(record);
+                  setModalDK(true);
+                }}
+              >
+                Đăng ký gói{" "}
+              </Button>
+            )}
+          </>
+        );
+      },
     },
-
   ];
   useEffect(() => {
     requestToken({
@@ -127,7 +154,7 @@ export default function Accountmanagement() {
       .catch((err: any) => {
         console.log("err: ", err);
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload]);
 
   return (
@@ -144,16 +171,40 @@ export default function Accountmanagement() {
       <div className="table-container">
         <Table dataSource={dataSource} columns={columns} />
       </div>
-    {
-      modalDkPackage && <AddPackage data={currentAccount} open={modalDkPackage} setOpen={setModalDK} callback={() => {
-        musReload()
-      }} />
-    }
-    {
-      modalnapPackage && <RechargePackage data={currentAccount} open={modalnapPackage} setOpen={setModalnap} callback={() => {
-        musReload()
-      }} />
-    }
+
+      {
+        modalnapPackage &&
+        <RechargePackage
+          data={currentAccount}
+          open={modalnapPackage}
+          setOpen={setModalnap} callback={() => {
+            musReload()
+          }} />
+      }
+      {modalDkPackage && (
+        <AddPackage
+          data={currentAccount}
+          open={modalDkPackage}
+          setOpen={setModalDK}
+          callback={() => { musReload() }}
+        />
+      )}
+      {modalCancelPackage && (
+        <ModalCancelPackage
+          currentAccount={currentAccount}
+          open={modalCancelPackage}
+          setOpen={setModalCancelPackage}
+          callback={() => { musReload() }}
+        />
+      )}
+      {modalTakeInterest && (
+        <ModalTakeInterest
+          currentAccount={currentAccount}
+          open={modalTakeInterest}
+          setOpen={setModalTakeInterest}
+          callback={() => { musReload() }}
+        />
+      )}
     </SInnerSidebar>
   );
 }

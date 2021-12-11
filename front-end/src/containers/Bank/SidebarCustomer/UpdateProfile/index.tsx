@@ -8,13 +8,9 @@ import { requestToken } from "src/api/axios";
 import { CustomerContext } from "src/common/context/CustomerContext";
 import moment from "moment";
 import "moment/locale/zh-cn";
-
+import { Alert } from 'src/common/components/Alert';
 export default function UpdateProfile() {
   const { theme } = useContext(ThemeContext);
-  const [state, setState] = useState<any>({
-    loading: false,
-    visible: false,
-  });
   const { toggleSidebar } = useContext(ToggleSidebarContext);
   const { customer, setCustomer } = useContext(CustomerContext);
   const onFinish = (values: any) => {
@@ -35,7 +31,7 @@ export default function UpdateProfile() {
       },
     })
       .then((res) => {
-        setState({ visible: false });
+        Alert({ name: res.data.message, icon: "success" })
       })
       .catch((err) => {
         console.log("err: ", err);
@@ -49,6 +45,7 @@ export default function UpdateProfile() {
     })
       .then((res: any) => {
         setCustomer(res.data.data);
+        
       })
       .catch((err: any) => {
         console.log("err: ", err);
@@ -77,7 +74,7 @@ export default function UpdateProfile() {
           onFinish={onFinish}
           initialValues ={{
             name: customer?.name,
-            birthday: new Date(customer?.birthday)||null,
+            birthday: moment(customer?.birthday)||null,
             card_id: customer?.card_id,
             address: customer?.address,
           }}

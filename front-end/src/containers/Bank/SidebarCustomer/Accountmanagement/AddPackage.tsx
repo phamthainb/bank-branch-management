@@ -58,6 +58,7 @@ export default function AddPackage({ data, open, setOpen, callback }: any) {
                             } else {
                                 Alert({ name: res.data.message, icon: "info" })
                             }
+                            setOpen(false);
                             callback && callback();
                         }).catch((err) => {
                             Alert({ name: err?.data?.message ?? "Có lỗi xảy ra.", icon: "error" })
