@@ -20,7 +20,7 @@ public class ScheduledTasks {
     @Autowired
     AccountRepository accountRepository;
 
-    @Scheduled(cron = "15 * * * * ?")
+    @Scheduled(cron = "0 0 * * *")
     @Transactional
     public void scheduleTaskWithCronExpression() {
         // get all account
@@ -34,12 +34,12 @@ public class ScheduledTasks {
                 Date today = new Date();
                 Date start_package = account.getStart_package();
                 int diffInDays = (int)( (today.getTime() - start_package.getTime())/ (1000 * 60 * 60 * 24) );
-//                if(diffInDays % 30 == 0 ){
+                if(diffInDays % 30 == 0 ){
                     float balance_interest = packageEntity.getApr() * account.getBalance_saving() / 100;
                     account.setBalance_interest(account.getBalance_interest() + balance_interest);
                     System.out.println("Tính lãi cho Account Code " + account.getCode() + ". Amount " + balance_interest);
                     accountRepository.save(account);
-//                }
+                }
             }
         }
     }
