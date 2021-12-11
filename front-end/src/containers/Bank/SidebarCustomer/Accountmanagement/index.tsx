@@ -6,6 +6,8 @@ import { CustomerContext } from "src/common/context/CustomerContext";
 import { ToggleSidebarContext } from "src/common/context/ToggleSidebarContext";
 import { ThemeContext } from "styled-components";
 import AddPackage from "./AddPackage";
+import ModalCancelPackage from "./ModalCancelPackage";
+import ModalTakeInterest from "./ModalTakeInterest";
 import { SInnerSidebar } from "./styles";
 
 interface ITable {
@@ -18,12 +20,14 @@ interface ITable {
 export default function Accountmanagement() {
   const { theme } = useContext(ThemeContext);
   const { toggleSidebar } = useContext(ToggleSidebarContext);
-  const { setCustomer } = useContext(CustomerContext);
+  const { customer, setCustomer } = useContext(CustomerContext);
   const [dataSource, setDataSource] = useState<ITable[]>([]);
-  
+
   // modal
   const [currentAccount, setCurrentAccount] = useState();
   const [modalDkPackage, setModalDK] = useState(false);
+  const [modalCancelPackage, setModalCancelPackage] = useState(false);
+  const [modalTakeInterest, setModalTakeInterest] = useState(false);
 
   const columns = [
     {
@@ -42,8 +46,8 @@ export default function Accountmanagement() {
       key: "package",
       render: (text: string, record: any) => {
         //console.log("record", record);
-        return record?.apackage?.name ?? "Chưa đăng ký gói tài khoản."
-      }
+        return record?.apackage?.name ?? "Chưa đăng ký gói tài khoản.";
+      },
     },
     {
       title: "Số dư tiết kiệm",
@@ -56,28 +60,50 @@ export default function Accountmanagement() {
       key: "balance_interest",
       render: (text: string, record: any) => {
         //console.log("record", record);
-        return record?.balance_interest ?? "0"
-      }
+        return record?.balance_interest ?? "0";
+      },
     },
     {
       title: "Chức năng",
       dataIndex: "handle",
       key: "hanlde",
       render: (text: string, record: any) => {
-        return <>
-          {record.apackage ? <>
-            <Button>Huỷ gói </Button>  
-            <Button>Rút lãi </Button>
-            <Button>Nạp thêm tiền tiết kiệm </Button>
-          </> : 
-          <Button onClick={() => {
-            setCurrentAccount(record);
-            setModalDK(true);
-          }} >Đăng ký gói </Button>}
-        </>
-      }
+        return (
+          <>
+            {record.apackage ? (
+              <>
+                <Button
+                  onClick={() => {
+                    setCurrentAccount(record);
+                    setModalCancelPackage(true);
+                  }}
+                >
+                  Huỷ gói{" "}
+                </Button>
+                <Button
+                  onClick={() => {
+                    setCurrentAccount(record);
+                    setModalTakeInterest(true);
+                  }}
+                >
+                  Rút lãi{" "}
+                </Button>
+                <Button>Nạp thêm tiền tiết kiệm </Button>
+              </>
+            ) : (
+              <Button
+                onClick={() => {
+                  setCurrentAccount(record);
+                  setModalDK(true);
+                }}
+              >
+                Đăng ký gói{" "}
+              </Button>
+            )}
+          </>
+        );
+      },
     },
-
   ];
   useEffect(() => {
     requestToken({
@@ -134,11 +160,29 @@ export default function Accountmanagement() {
       <div className="table-container">
         <Table dataSource={dataSource} columns={columns} />
       </div>
-    {
-      modalDkPackage && <AddPackage open={modalDkPackage} setOpen={setModalDK} callback={() => {
-        
-      }} />
-    }
+      {modalDkPackage && (
+        <AddPackage
+          open={modalDkPackage}
+          setOpen={setModalDK}
+          callback={() => {}}
+        />
+      )}
+      {modalCancelPackage && (
+        <ModalCancelPackage
+          currentAccount={currentAccount}
+          open={modalCancelPackage}
+          setOpen={setModalCancelPackage}
+          callback={() => {}}
+        />
+      )}
+      {modalTakeInterest && (
+        <ModalTakeInterest
+          currentAccount={currentAccount}
+          open={modalTakeInterest}
+          setOpen={setModalTakeInterest}
+          callback={() => {}}
+        />
+      )}
     </SInnerSidebar>
   );
 }
