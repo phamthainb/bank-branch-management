@@ -45,7 +45,7 @@ export const SInnerSidebar = styled.div`
     }
   }
   .table-container{
-    width: 600px;
+   // width: 600px;
     margin: 30px auto;
   }
 `;
