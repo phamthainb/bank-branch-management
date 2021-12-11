@@ -143,7 +143,7 @@ const ListData = ({ data, mustReload }: any) => {
               avatar={
                 <Avatar src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png" />
               }
-              title={<a href="https://ant.design/index-cn">{item.name}</a>}
+              title={<a>{item.name}</a>}
               description={item.address}
             />
           </List.Item>

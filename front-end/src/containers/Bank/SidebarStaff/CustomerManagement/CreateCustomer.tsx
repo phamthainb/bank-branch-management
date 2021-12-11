@@ -133,7 +133,7 @@ export default function CreateCustomer({ callback }: any) {
             <Input />
           </Form.Item>
 
-          <Form.Item
+          {/* <Form.Item
             label="Trạng thái"
             valuePropName="checked"
             style={{ marginBottom: "15px" }}
@@ -141,7 +141,7 @@ export default function CreateCustomer({ callback }: any) {
             rules={[{ required: true, message: "Please input your status!" }]}
           >
             <Switch />
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item label="">
             <Button htmlType="submit">Tạo</Button>

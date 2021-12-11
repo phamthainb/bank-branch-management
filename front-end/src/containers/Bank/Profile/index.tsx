@@ -118,7 +118,7 @@ export default function Profile() {
 
           <div className="detail_item">
             <p className="title">Trạng thái:</p>
-            <p className="content">{data?.status === true ? "Hoạt động" : "Không hoạt động"}</p>
+            <p className="content">Hoạt động</p>
           </div>
 
           <div className="detail_item">

@@ -7,7 +7,7 @@ export default function Onboarding() {
   return (
     <SOnboarding>
       <img src="/images/bank.png" alt="video" width={250} />
-      <p>Bank branch manager</p>
+      <p style={{color: "black"}}>Bank branch manager</p>
       <Link to="/login">
         <Button type="primary">
           Login
