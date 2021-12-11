@@ -7,12 +7,14 @@ import { CustomerContext } from "src/common/context/CustomerContext";
 import { requestToken } from "src/api/axios";
 import { Form, Select, Button, Input } from "antd";
 import { FormInstance } from "antd/es/form";
+import { Alert } from "src/common/components/Alert";
 export default function Payment() {
   const { theme } = useContext(ThemeContext);
   const formRef = React.createRef<FormInstance>();
   const { setCustomer } = useContext(CustomerContext);
   const [listAccount, setListAccount] = useState<any[]>([]);
   const [accountTarget, setAccountTarget] = useState<any>(null);
+  const [accountSource, setAccountSource] = useState<any>(null);
   useEffect(() => {
     requestToken({
       method: "GET",
@@ -47,30 +49,48 @@ export default function Payment() {
   // const onGenderChange = (value: string) => {
   // };
   const onFinish = (values: any) => {
-    if (accountTarget !== null) {
+    if(accountTarget!==null && accountTarget?.id===values.fromId){
+      Alert({
+        name: "Tài khoản nguồn và tài khoản đích không thể trùng nhau!",
+        icon: "error",
+      });
+    }
+    else if (accountTarget !== null) {
       requestToken({
         method: "POST",
         url: "/account/pay",
-        data: { 
-          accountIn:{
+        data: {
+          accountIn: {
             id: accountTarget?.id,
           },
-          accountOut:{
-            id: values.fromId
+          accountOut: {
+            id: values.fromId,
           },
-          amount: values.amount,
-          type: "",
-         },
+          amount: Number(values.amount),
+          type: values.type,
+        },
       })
         .then((res: any) => {
-          alert("Chuyển tiền thành công");
+          Alert({
+            name: "Chuyển tiền thành công!",
+            icon: "success",
+          });
+          formRef.current!.resetFields();
+          setAccountTarget(null);
+          setAccountSource(null);
         })
         .catch((err: any) => {
           console.log("err: ", err);
-          formRef.current!.resetFields();
+          Alert({
+            name: "Số dư không đủ.",
+            icon: "error",
+          });
         });
     } else {
-      alert("not account");
+      Alert({
+        name: "Tài khoản đích không tồn tại!",
+        icon: "error",
+      });
     }
   };
   const findAccountByCode = (code: any) => {
@@ -82,7 +102,9 @@ export default function Payment() {
       .then((res: any) => {
         if (res.data.status === "OK") {
           setAccountTarget(res.data.data);
-        } else setAccountTarget(null);
+        } else {
+          setAccountTarget(null);
+        }
       })
       .catch((err: any) => {
         console.log("err: ", err);
@@ -108,8 +130,16 @@ export default function Payment() {
           >
             <Select
               placeholder="Select a option and change input text above"
-              // onChange={onGenderChange}
               allowClear
+              onChange={(value) => {
+                for (let i in listAccount) {
+                  if (value === listAccount[i].id) {
+                    setAccountSource(listAccount[i]);
+                    console.log(listAccount[i]);
+                    break;
+                  }
+                }
+              }}
             >
               {listAccount.map((item, index) => {
                 return (
@@ -130,10 +160,28 @@ export default function Payment() {
               placeholder="Select a type"
               // onChange={onGenderChange}
               allowClear
+              onChange={(value: any) => {
+                switch (value) {
+                  case "SAVING":
+                    formRef.current!.setFieldsValue({
+                      available: accountSource?.balance_saving,
+                    });
+                    return;
+                  case "MONEY":
+                    formRef.current!.setFieldsValue({
+                      available: accountSource?.balance,
+                    });
+                    return;
+                }
+              }}
             >
               <Option value="MONEY">Số dư tín dụng</Option>
               <Option value="SAVING">Số dư tiết kiệm</Option>
             </Select>
+          </Form.Item>
+
+          <Form.Item name="available" label="Số dư khả dụng">
+            <Input disabled />
           </Form.Item>
 
           <Form.Item
@@ -144,27 +192,30 @@ export default function Payment() {
               { pattern: /^[0-9]*$/, message: "Only number!" },
             ]}
           >
-            <Input onChange={(e) => findAccountByCode(e.target.value)} />
+            <Input
+              onChange={(e) => {
+                findAccountByCode(e.target.value);
+              }}
+            />
           </Form.Item>
+
+          {accountTarget !== null && (
+          <Form.Item name="targetCustomer" label="Chủ tài khoản">
+            {accountTarget?.customer?.name}
+          </Form.Item>
+          )} 
 
           <Form.Item
             name="amount"
             label="Số tiền"
             rules={[
               { required: true, message: "Cannot be empty!" },
-              { pattern: /^[0-9]*$/, message: "Only number!" },
+              { pattern: /^[0-9]*000$/, message: "The amount must be a multiple of 1000!" },
             ]}
           >
             <Input />
           </Form.Item>
 
-          {/* <Form.Item
-            name="note"
-            label="Nội dung"
-            rules={[{ required: true, message: "Cannot be empty!" }]}
-          >
-            <Input />
-          </Form.Item> */}
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit">
               Xác nhận
