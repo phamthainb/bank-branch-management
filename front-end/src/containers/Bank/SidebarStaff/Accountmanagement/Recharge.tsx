@@ -7,7 +7,7 @@ import {
 } from 'antd';
 import { requestToken } from 'src/api/axios';
 
-export default function Recharge({ account }: { account: any }) {
+export default function Recharge({ account, callback }: any) {
   const [state, setState] = useState<any>({
     loading: false,
     visible: false,
@@ -42,6 +42,7 @@ export default function Recharge({ account }: { account: any }) {
     }).then((res) => {
       console.log("res: ", res);
       setState({ visible: false });
+      callback()
     }).catch((err) => {
       console.log("err: ", err);
     })

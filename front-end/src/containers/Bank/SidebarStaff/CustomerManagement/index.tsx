@@ -6,15 +6,23 @@ import WrapContent from "src/common/components/WrapContent";
 import { NavigatorContext, ProfileContext } from "src/common/context/NavigatorContext";
 import { ToggleSidebarContext } from "src/common/context/ToggleSidebarContext";
 import { ThemeContext } from "styled-components";
+import CreateCustomer from "./CreateCustomer";
 import EditCustomer from "./EditCustomer";
 import { SInnerSidebar } from "./styles";
 
-export default function EditCustomerManagement() {
+export default function CustomerManagement() {
   const { theme } = useContext(ThemeContext);
   const { data } = useContext(ProfileContext);
 
   const { toggleSidebar } = useContext(ToggleSidebarContext);
   const [state, setstate] = useState<any>();
+
+
+  const [reload, setReload] = useState(false);
+
+  const mustReload = () => {
+    setReload(!reload);
+  }
 
   useEffect(() => {
     if (data) {
@@ -30,10 +38,10 @@ export default function EditCustomerManagement() {
         setstate({ data: resData.content })
       }).catch()
     }
-  }, [data])
+  }, [reload, data])
 
   return (
-    <WrapContent title="Quản lý khách hàng đã tạo">
+    <WrapContent title="Quản lý khách hàng">
       <SInnerSidebar>
         <div className="top">
           <h3
@@ -45,21 +53,21 @@ export default function EditCustomerManagement() {
         </div>
 
         <Divider />
-        <div className="search">
+        {/* <div className="search">
           <h3>Tìm kiếm </h3>
           <FormLayoutDemo />
         </div>
-        <Divider />
+        <Divider /> */}
 
-        <div className="handle">
+        <div className="handle" style={{ marginBottom: "20px" }}>
           <p>Thêm mới khách hàng</p>
-          <EditCustomer />
+          <CreateCustomer callback={() => { mustReload() }} />
         </div>
 
         <div className="body">
           <h3>Danh sách khách hàng</h3>
           {/* <Table columns={columns} dataSource={state?.data ?? []} /> */}
-          <ListData data={state?.data ?? []} />
+          <ListData data={state?.data ?? []} mustReload={mustReload} />
         </div>
       </SInnerSidebar>
     </WrapContent>
@@ -92,7 +100,7 @@ const FormLayoutDemo = () => {
   );
 };
 
-const ListData = ({ data }: any) => {
+const ListData = ({ data, mustReload }: any) => {
   const [state, setState] = useState({ visible: false })
   const onClose = () => {
     setState({
@@ -107,7 +115,6 @@ const ListData = ({ data }: any) => {
       setState({
         visible: true,
       });
-      console.log(res.data.data);
       setCustomer(res.data.data);
     })
   };
@@ -121,10 +128,15 @@ const ListData = ({ data }: any) => {
           <List.Item
             key={item.id}
             actions={[
-              // eslint-disable-next-line jsx-a11y/anchor-is-valid
-              <Button onClick={() => showDrawer(item.id)} key={`a-${item.id}`}>
-                Xem chi tiết
-              </Button>
+              <div className="handle-button" style={{ display: "flex", alignItems: "center" }}>
+                <div className="edit" style={{ marginRight: "5px" }}>
+                  <EditCustomer item={item} callback={() => { mustReload() }} />
+                </div>
+
+                <Button onClick={() => showDrawer(item.id)} key={`a-${item.id}`}>
+                  Xem chi tiết
+                </Button>
+              </div>
             ]}
           >
             <List.Item.Meta

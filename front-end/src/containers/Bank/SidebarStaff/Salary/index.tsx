@@ -23,6 +23,7 @@ export default function Salary() {
 
   const [search, setSearch] = useState<any>({});
 
+
   useEffect(() => {
     if (data) {
       if (Object.keys(search).length > 0) {
@@ -127,106 +128,53 @@ const ListData = ({ data }: any) => {
     });
   };
 
-  const [account, setAccount] = useState<any>();
+  const [salary, setSalary] = useState<any>();
+  console.log("data: ", data);
 
-  const showDrawer = (id: any) => {
-    requestToken({ method: "GET", url: `/account?id=${id}` }).then((res: any) => {
-      setState({
-        visible: true,
-      });
-      // console.log(res.data.data);
-      setAccount(res.data.data);
-    })
+  const showDrawer = (item: any) => {
+    console.log("item: ", item);
+    setSalary(item);
+    console.log("salary: ", salary);
   };
 
   return (
-    <>
-      <List
-        dataSource={data.map((i: any) => ({ name: i.name, id: i.id, address: i.address }))}
-        bordered
-        renderItem={(item: any) => (
-          <List.Item
-            key={item.id}
-            actions={[
-              <>
-                <div className="detaik">
-                  <Button onClick={() => showDrawer(item.id)} key={`a-${item.id}`}>
-                    Xem chi tiết
-                  </Button>
-                </div>
-              </>
-            ]}
-          >
-            <List.Item.Meta
+    <List
+      dataSource={data}
+      bordered
+      renderItem={(item: any) => (
+        <List.Item
+          key={item.id}
+        // actions={}
+        >
+          <>
+            {/* <List.Item.Meta
               avatar={
                 <Avatar src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png" />
               }
-              title={<a href="https://ant.design/index-cn">{item.name}</a>}
-              description={item.address}
-            />
-          </List.Item>
-        )}
-      />
+              title={<a href="https://ant.design/index-cn">{ }</a>}
+              description={null}
+            /> */}
 
-      {account && <Drawer
-        width={640}
-        placement="right"
-        closable={false}
-        onClose={onClose}
-        visible={state.visible}
-      >
-        <p className="site-description-item-profile-p" style={{ marginBottom: 24 }}>
-          Thông tin tài khoản
-        </p>
-        <Row>
-          <Col span={12}>
-            <DescriptionItem title="Mã tài khoản" content={account?.id} />
-          </Col>
-          <Col span={12}>
-            <DescriptionItem title="Số tài khoản" content={account?.code} />
-          </Col>
-        </Row>
 
-        <Divider />
+            <DescriptionItem title="Mã" content={item?.id} />
 
-        <Row>
-          <Col span={12}>
-            <DescriptionItem title="Số dư" content={account?.balance} />
-          </Col>
-          <Col span={12}>
-            <DescriptionItem title="Loại tài khoản" content={account?.apackage?.type === "saving" ? "Tiết kiệm" : "Tín dụng"} />
-          </Col>
-        </Row>
+            <DescriptionItem title="Số tiền" content={item?.amount} />
 
-        <Divider />
+            <DescriptionItem title="Ngày" content={new Date(item?.updatedAt)?.toLocaleString()} />
 
-        <Row>
-          <Col span={12}>
-            <DescriptionItem title="Tên người dùng" content={account?.customer?.name} />
-          </Col>
-          <Col span={12}>
-            <DescriptionItem title="Mã người dùng" content={account?.customer?.id} />
-          </Col>
-        </Row>
+            <DescriptionItem title="Ghi chú" content={item?.note} />
 
-        <Divider />
-
-        <Row>
-          <Col span={12}>
-            <DescriptionItem title="Trạng thái" content={account?.status === true ? "Hoạt động" : "Khóa"} />
-          </Col>
-          <Col span={12}>
-            <DescriptionItem title="Nhân viên quản lý" content={account?.staff?.name} />
-          </Col>
-        </Row>
-      </Drawer>}
-    </>
+          </>
+        </List.Item>
+      )}
+    />
   );
 }
 
 const DescriptionItem = ({ title, content }: any) => (
   <div className="site-description-item-profile-wrapper">
-    <p className="site-description-item-profile-p-label">{title}:</p>
+    <p className="site-description-item-profile-p-label"></p>
+    {title}: {` `}
     {content}
   </div>
 );

@@ -17,13 +17,13 @@ export default function AdminStaff() {
 
   // data 
   const [state, setstate] = useState<any>();
-  const[reload, setReload] = useState(false);
+  const [reload, setReload] = useState(false);
   const [search, setSearch] = useState<any>({});
 
   const mustReload = () => {
     setReload(!reload);
   }
- 
+
   useEffect(() => {
     requestToken({ method: "GET", url: `/staff/list?${new URLSearchParams(clearParams(search)).toString()}` }).then((res) => {
       //console.log(res.data.data);
@@ -42,7 +42,7 @@ export default function AdminStaff() {
           onClick={() => toggleSidebar && toggleSidebar(false)}
         >
           <FaChevronLeft color={theme.text.main} size={16} />
-          Quản lý Nhân viên
+          Quản lý tài khoản Staff
         </h3>
       </div>
       <Divider />
@@ -55,7 +55,7 @@ export default function AdminStaff() {
 
       <div className="handle">
         <Button type="primary" onClick={() => setModal(!modal)} >Thêm mới</Button>
-        <CreateStaff open={modal} setOpen={setModal} callback = {() => {mustReload()}} />
+        <CreateStaff open={modal} setOpen={setModal} callback={() => { mustReload() }} />
       </div>
       <Divider />
 
@@ -67,7 +67,7 @@ export default function AdminStaff() {
   );
 }
 
-const FormSearch = ({onSearch} : any) => {
+const FormSearch = ({ onSearch }: any) => {
   const [form] = Form.useForm();
 
   return (

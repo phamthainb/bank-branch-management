@@ -17,6 +17,12 @@ export default function Accountmanagement() {
   const { data } = useContext(ProfileContext);
   const [state, setstate] = useState<any>();
 
+  const [reload, setReload] = useState(false);
+
+  const mustReload = () => {
+    setReload(!reload);
+  }
+
   useEffect(() => {
     if (data) {
       requestToken({
@@ -31,7 +37,7 @@ export default function Accountmanagement() {
         setstate({ data: resData.content })
       }).catch()
     }
-  }, [data])
+  }, [reload, data])
 
   return (
     <WrapContent title="Quản lý tài khoản">
@@ -46,20 +52,21 @@ export default function Accountmanagement() {
         </div>
 
         <Divider />
+        {/* <Divider />
         <div className="search">
           <h3>Tìm kiếm </h3>
           <FormLayoutDemo />
         </div>
-        <Divider />
+        <Divider /> */}
 
-        <div className="handle">
-          <div className="handle_item create">
+        <div className="handle" style={{ display: "flex", alignItems: "center", marginBottom: "20px" }}>
+          <div className="handle_item create" style={{ marginRight: "20px" }}>
             <p>Thêm mới Tài khoản</p>
-            <CreateAccount />
+            <CreateAccount callback={() => { mustReload() }} />
           </div>
           <div className="handle_item edit">
             <p>Sửa Tài khoản</p>
-            <EditAccount />
+            <EditAccount callback={() => { mustReload() }} />
           </div>
         </div>
 
@@ -99,7 +106,7 @@ const FormLayoutDemo = () => {
   );
 };
 
-const ListData = ({ data }: any) => {
+const ListData = ({ data, mustReload }: any) => {
   const [state, setState] = useState({ visible: false })
   const onClose = () => {
     setState({
@@ -108,6 +115,8 @@ const ListData = ({ data }: any) => {
   };
 
   const [account, setAccount] = useState<any>();
+
+  // console.log("data: ", data);
 
   const showDrawer = (id: any) => {
     requestToken({ method: "GET", url: `/account?id=${id}` }).then((res: any) => {
@@ -122,34 +131,50 @@ const ListData = ({ data }: any) => {
   return (
     <>
       <List
-        dataSource={data.map((i: any) => ({ name: i.name, id: i.id, address: i.address }))}
+        dataSource={data}
         bordered
-        renderItem={(item: any) => (
-          <List.Item
-            key={item.id}
-            actions={[
-              <>
-                <div className="recharge">
-                  <Recharge account={account} />
-                </div>
+        renderItem={(item: any) => {
+          // console.log("item: ", item);
+          return (
+            <List.Item
+              key={item.id}
+              actions={[
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <div className="recharge" style={{ marginRight: "5px" }}>
+                    <Recharge account={item} callback={() => { mustReload() }} />
+                  </div>
 
-                <div className="detaik">
-                  <Button onClick={() => showDrawer(item.id)} key={`a-${item.id}`}>
-                    Xem chi tiết
-                  </Button>
+                  <div className="detail">
+                    <Button onClick={() => showDrawer(item.id)} key={`a-${item.id}`}>
+                      Xem chi tiết
+                    </Button>
+                  </div>
                 </div>
+              ]}
+            >
+              <>
+                {/* <List.Item.Meta
+                  avatar={
+                    <Avatar src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png" />
+                  }
+                  title={<a href="https://ant.design/index-cn">{ }</a>}
+                  description={null}
+                /> */}
+
+                <DescriptionItem title="Mã tài khoản" content={item?.id} />
+
+                <DescriptionItem title="Số tài khoản" content={item?.code} />
+
+                <DescriptionItem title="Số dư" content={item?.balance} />
+
+                <DescriptionItem title="Số dư tín dụng" content={item?.balance_interest} />
+
+                <DescriptionItem title="Số dư tiết kiệm" content={item?.balance_saving} />
+
               </>
-            ]}
-          >
-            <List.Item.Meta
-              avatar={
-                <Avatar src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png" />
-              }
-              title={<a href="https://ant.design/index-cn">{item.name}</a>}
-              description={item.address}
-            />
-          </List.Item>
-        )}
+            </List.Item>
+          )
+        }}
       />
 
       {account && <Drawer

@@ -20,7 +20,7 @@ export const roleStaff: IRole[] = [
   {
     name: "Quản lý khách hàng",
     icon: <FaRegUser />,
-    route: "/bank/staff/edit-customer-management",
+    route: "/bank/staff/customer-management",
     component: <Accountmanagement />
   },
   {

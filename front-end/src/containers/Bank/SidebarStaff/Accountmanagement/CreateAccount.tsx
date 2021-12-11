@@ -7,7 +7,7 @@ import {
 } from 'antd';
 import { requestToken } from 'src/api/axios';
 
-export default function CreateAccount() {
+export default function CreateAccount({ callback }: any) {
   const [state, setState] = useState<any>({
     loading: false,
     visible: false,
@@ -37,10 +37,11 @@ export default function CreateAccount() {
         ...values,
       },
     }).then((res) => {
-      console.log("res: ", res);
+      // console.log("res: ", res);
       setState({ visible: false });
+      callback()
     }).catch((err) => {
-      console.log("err: ", err);
+      // console.log("err: ", err);
     })
   };
 

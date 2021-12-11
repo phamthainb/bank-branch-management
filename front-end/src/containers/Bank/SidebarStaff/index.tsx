@@ -7,7 +7,7 @@ import Salary from "./Salary";
 import Accountmanagement from "./Accountmanagement";
 import { SSidebar } from "./styles";
 import { SidebarStaffContext } from "src/common/context/Staff/SidebarStaffContext";
-import CreateCustomerManagement from "./EditCustomerManagement";
+import CreateCustomerManagement from "./CustomerManagement";
 
 export default function SidebarStaff() {
   const { indexStaff } = useContext(SidebarStaffContext);
