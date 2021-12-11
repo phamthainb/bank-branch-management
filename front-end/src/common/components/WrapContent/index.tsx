@@ -12,8 +12,8 @@ const WrapContent: FC<WrapContentProps> = ({ children, title }) => {
 
   return (
     <WrapContentStyles>
-      <div className="welcom">Xin chào { }</div>
-      <div className="title">{title}</div>
+      <h4 className="welcom">Xin chào {data?.name}</h4>
+      <h2 className="title">{title}</h2>
       {children}
     </WrapContentStyles>
   );

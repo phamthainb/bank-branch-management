@@ -36,12 +36,12 @@ export default function Login() {
             method: "GET",
             url: API_URL.AUTH.PROFILE
           }).then((res) => {
-           // console.log("res", res);
-            
+            // console.log("res", res);
+
             setData(res?.data?.data)
             const role = res?.data?.data?.user?.role?.toLowerCase();
-           // console.log("role", role);
-            
+            // console.log("role", role);
+
             if (role) {
               setRole(role);
               history.push(`bank/${role}`)
@@ -52,14 +52,14 @@ export default function Login() {
     }).catch((err) => {
       console.log("err: ", err);
     })
-      // .then((res: any) => {
-      //   console.log("res: ", res);
-      //   localStorage.setItem("token", res.data.data);
-      //   history.push("/");
-      // })
-      // .catch((err: any) => {
-      //   console.log("err: ", err);
-      // });
+    // .then((res: any) => {
+    //   console.log("res: ", res);
+    //   localStorage.setItem("token", res.data.data);
+    //   history.push("/");
+    // })
+    // .catch((err: any) => {
+    //   console.log("err: ", err);
+    // });
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -104,13 +104,6 @@ export default function Login() {
               Login
             </Button>
           </Form.Item>
-
-          <Divider plain>
-            or{" "}
-            <Link to="/signup">
-              <span style={{ fontWeight: 600 }}>Register</span>
-            </Link>
-          </Divider>
         </Form>
       </div>
     </SLogin>
