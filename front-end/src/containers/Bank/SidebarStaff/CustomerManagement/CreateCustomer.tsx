@@ -4,19 +4,13 @@ import {
   Form,
   Input,
   Button,
-  Radio,
-  Select,
-  Cascader,
   DatePicker,
-  InputNumber,
-  TreeSelect,
   Switch,
 } from 'antd';
-import { request } from 'src/api/axios';
+import { request, requestToken } from 'src/api/axios';
+import { Alert } from 'src/common/components/Alert';
 
-type RequiredMark = boolean | 'optional';
-
-export default function EditCustomer() {
+export default function CreateCustomer({ callback }: any) {
   const [state, setState] = useState<any>({
     loading: false,
     visible: false,
@@ -40,43 +34,42 @@ export default function EditCustomer() {
 
   const onFinish = (values: any) => {
     const birthday = values.birthday.format("DD/MM/YYYY")
-    console.log("birthday: ", birthday);
+    // console.log("birthday: ", birthday);
 
-    request({
-      method: "PUT",
+    requestToken({
+      method: "POST",
       url: "customer",
       data: {
         ...values,
         birthday: birthday
       },
     }).then((res) => {
-      console.log("res: ", res);
+      // console.log("res: ", res);
       setState({ visible: false });
+      if (res.data.status === "OK") {
+        Alert({ name: res.data.message, icon: "success" })
+      } else {
+        Alert({ name: res.data.message, icon: "info" })
+      }
+      callback()
     }).catch((err) => {
-      console.log("err: ", err);
+      // console.log("err: ", err);
     })
   };
 
   return (
     <div>
       <Button type="primary" onClick={showModal}>
-        Sửa thông tin khách hàng khách hàng
+        Thêm khách hàng
       </Button>
 
       <Modal
         visible={visible}
-        title="Thêm mới khách hàng"
+        title="Thêm khách hàng"
         width={700}
         onOk={handleOk}
         onCancel={handleCancel}
-      // footer={[
-      //   <Button key="back" onClick={handleCancel}>
-      //     Huỷ
-      //   </Button>,
-      //   <Button key="submit" type="primary" onClick={handleOk}>
-      //     Tạo
-      //   </Button>,
-      // ]}
+        footer={null}
       >
         <Form
           labelCol={{ span: 4 }}
@@ -150,8 +143,8 @@ export default function EditCustomer() {
             <Switch />
           </Form.Item>
 
-          <Form.Item label="Button">
-            <Button htmlType="submit">Button</Button>
+          <Form.Item label="">
+            <Button htmlType="submit">Tạo</Button>
           </Form.Item>
         </Form>
       </Modal>

@@ -6,8 +6,9 @@ import {
   Button,
 } from 'antd';
 import { requestToken } from 'src/api/axios';
+import { Alert } from 'src/common/components/Alert';
 
-export default function CreateAccount() {
+export default function CreateAccount({ callback }: any) {
   const [state, setState] = useState<any>({
     loading: false,
     visible: false,
@@ -37,10 +38,16 @@ export default function CreateAccount() {
         ...values,
       },
     }).then((res) => {
-      console.log("res: ", res);
+      // console.log("res: ", res);
       setState({ visible: false });
+      if (res.data.status === "OK") {
+        Alert({ name: res.data.message, icon: "success" })
+      } else {
+        Alert({ name: res.data.message, icon: "info" })
+      }
+      callback()
     }).catch((err) => {
-      console.log("err: ", err);
+      // console.log("err: ", err);
     })
   };
 

@@ -1,7 +1,7 @@
 import { Dropdown, Menu, Tooltip } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { ToggleSidebarContext } from "src/common/context/ToggleSidebarContext";
 import { ThemeContext } from "styled-components";
 import { menu, roleAdmin, roleCustomer, roleStaff } from "./store/data";
@@ -19,7 +19,7 @@ export default function Navigator() {
   const { indexCustomer, setIndexCustomer } = useContext(SidebarCustomerContext);
   const { indexAdmin, setIndexAdmin } = useContext(SidebarAdminContext);
   const { toggleSidebar } = useContext(ToggleSidebarContext);
-console.log("role", role);
+  console.log("role", role);
 
   return (
     <SNavigator>
@@ -117,6 +117,7 @@ console.log("role", role);
 }
 
 const overlay = (theme: any) => {
+
   return (
     <Menu>
       {menu.map((m: any, i: number) => (
@@ -130,7 +131,7 @@ const overlay = (theme: any) => {
         className="dropdown_item logout"
         key={menu.length}
       >
-        Log out
+        <Link to="/">Log out</Link>
       </Menu.Item>
     </Menu>
   );
