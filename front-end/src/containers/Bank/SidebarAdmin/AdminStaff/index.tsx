@@ -42,7 +42,7 @@ export default function AdminStaff() {
           onClick={() => toggleSidebar && toggleSidebar(false)}
         >
           <FaChevronLeft color={theme.text.main} size={16} />
-          Quản lý tài khoản Staff
+          Quản lý Nhân viên
         </h3>
       </div>
       <Divider />

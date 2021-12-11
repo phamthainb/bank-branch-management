@@ -1,35 +1,27 @@
 import { useState, useEffect } from 'react'
-import { Divider, Modal, Switch } from 'antd';
+import { Divider, Modal } from 'antd';
 import {
     Form,
     Input,
     Button,
-    Select,
-    DatePicker,
-    InputNumber,
 } from 'antd';
 import { requestToken } from 'src/api/axios';
 import { Alert } from 'src/common/components/Alert';
-import moment from 'moment';
 
-export default function EditStaff({ open, setOpen }: any) {
+export default function EditPackage({ open, setOpen, callback }: any) {
 
     const handleCancel = () => {
         setOpen(0)
     };
 
-    // console.log("open", open);
-
     const [staff, setStaff] = useState<any>();
 
     useEffect(() => {
         if (open) {
-            requestToken({ method: "GET", url: `/staff?id=${open}` }).then(res => {
-                setStaff(res.data.data);
-                //console.log("res", res.data);
-            }).catch(err => { })
+            setStaff(open)
         }
     }, [open])
+    //console.log("staff", staff);
 
     return (
         <div>
@@ -37,7 +29,7 @@ export default function EditStaff({ open, setOpen }: any) {
             <Modal
                 onCancel={handleCancel}
                 visible={open ? true : false}
-                title="Chỉnh sửa nhân viên"
+                title="Chỉnh sửa Gói gửi tiền"
                 width={700}
                 footer={null}
             >
@@ -49,9 +41,8 @@ export default function EditStaff({ open, setOpen }: any) {
                     onFinish={(data: any) => {
                         console.log("data", data);
                         requestToken({
-                            method: "PUT", url: "/staff", data: {
+                            method: "PUT", url: "/package", data: {
                                 ...data,
-                                birthday: data.birthday.format("DD/MM/YYYY"),
                                 id: staff.id
                             }
                         }).then((res) => {
@@ -60,59 +51,28 @@ export default function EditStaff({ open, setOpen }: any) {
                             } else {
                                 Alert({ name: res.data.message, icon: "info" })
                             }
+                            callback && callback();
                         }).catch((err) => {
                             Alert({ name: err.data.message, icon: "error" })
                         })
                     }}
                     initialValues={{
-                        "address": staff?.address ?? "",
-                        "birthday": moment(staff?.birthday),
-                        "card_id": staff?.card_id ?? "",
-                        "expYear": staff?.expYear ?? 0,
                         "name": staff?.name ?? "",
-                        "position": staff?.position ?? "",
-                        "rate": staff?.rate ?? "",
-                        "username": staff?.user?.username ?? "",
-                        "status": staff?.status
+                        "apr": staff?.apr ?? "",
+                        "minBalance": staff?.minBalance ?? "",
                     }}
                 >
 
-                    <Form.Item label="Tài khoản" name="username">
-                        <Input disabled value={staff.username} />
-                    </Form.Item>
-
-                    <Form.Item label="Họ và tên" name="name">
+                    <Form.Item label="Tên gói" name="name">
+                        <Input />
+                    </Form.Item>    
+                    <Form.Item label="Lãi suất" name="apr">
                         <Input />
                     </Form.Item>
-                    <Form.Item label="CMT" name="card_id">
+                    <Form.Item label="Số dư tối thiểu" name="minBalance">
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Ngày sinh" name="birthday">
-                        <DatePicker />
-                    </Form.Item>
-
-                    <Form.Item label="Số năm kinh nghiệm" name="expYear">
-                        <InputNumber />
-                    </Form.Item>
-
-                    <Form.Item label="Bậc nghề" name="rate">
-                        <Select>
-                            <Select.Option value="low">Thấp</Select.Option>
-                            <Select.Option value="mid">Trung bình</Select.Option>
-                            <Select.Option value="high">Cao</Select.Option>
-                        </Select>
-                    </Form.Item>
-
-                    <Form.Item label="Vị trí công việc" name="position">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item label="Địa chỉ" name="address">
-                        <Input />
-                    </Form.Item>
-                    <Divider />
-                    <Form.Item label="Trạng thái" valuePropName="status" name="status">
-                        <Switch defaultChecked={staff.status} />
-                    </Form.Item>
+                   
                     <Divider />
 
                     <Button key="back" onClick={handleCancel}>
