@@ -20,7 +20,7 @@ public class ScheduledTasks {
     @Autowired
     AccountRepository accountRepository;
 
-    @Scheduled(cron = "15 * * * * ?")
+    @Scheduled(cron = "0 0 0 ? * * *")
     @Transactional
     public void scheduleTaskWithCronExpression() {
         // get all account
