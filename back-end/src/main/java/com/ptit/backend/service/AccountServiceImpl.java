@@ -213,7 +213,6 @@ public class AccountServiceImpl implements AccountService {
         if (accountOut != null && accountIn != null && data.getAmount() > 0) {
             if (Objects.equals(typePay, PayDto.typePay.saving)) {
                 // chuyen tien trong tk gui tien
-
                 float balance = accountOut.getBalance_saving();
                 // check balance account out
                 if (balance >= data.getAmount() &&

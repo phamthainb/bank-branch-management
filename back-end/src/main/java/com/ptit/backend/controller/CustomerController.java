@@ -92,7 +92,7 @@ public class CustomerController {
         return ResponseObject.builder().status(HttpStatus.OK).message("Lấy danh sách khách hàng thành công").data(list).build();
     }
 
-    @PutMapping(params = "id")
+    @PutMapping()
     public ResponseObject updateCustomer(@RequestBody CustomerEntity customer) {
         // user can update only field below
         CustomerEntity c = customerService.getCustomerById(customer.getId());
