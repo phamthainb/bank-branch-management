@@ -3,14 +3,11 @@ import {
     Form,
     Input,
     Button,
-    Select,
-    DatePicker,
-    InputNumber,
 } from 'antd';
 import { requestToken } from 'src/api/axios';
 import { Alert } from 'src/common/components/Alert';
 
-export default function CreateStaff({ open, setOpen, callback }: any) {
+export default function CreatePackage({ open, setOpen, callback }: any) {
 
     const handleCancel = () => {
         setOpen(false)
@@ -21,7 +18,7 @@ export default function CreateStaff({ open, setOpen, callback }: any) {
             <Modal
                 onCancel={handleCancel}
                 visible={open}
-                title="Thêm mới nhân viên"
+                title="Thêm mới Gói tài khoản"
                 width={700}
                 footer={null}
             >
@@ -33,9 +30,9 @@ export default function CreateStaff({ open, setOpen, callback }: any) {
                     onFinish={(data: any) => {
                         //console.log("data", data);
                         requestToken({
-                            method: "POST", url: "/staff", data: {
+                            method: "POST", url: "/package", data: {
                                 ...data,
-                                birthday: data.birthday.format("DD/MM/YYYY")
+                                type: "saving"
                             }
                         }).then((res) => {
                             if (res.data.status === "CREATED") {
@@ -45,46 +42,20 @@ export default function CreateStaff({ open, setOpen, callback }: any) {
                             }
                             callback();
                         }).catch((err) => {
-                            Alert({ name: err?.data?.message??"Có lỗi xảy ra.", icon: "error" })
+                            Alert({ name: err?.data?.message ?? "Có lỗi xảy ra.", icon: "error" })
                         })
                     }}
                 >
 
-                    <Form.Item label="Tài khoản" name="username">
+                    <Form.Item label="Tên gói" name="name">
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Mật khẩu" name="password">
+                    <Form.Item label="Lãi suất" name="apr">
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Họ và tên" name="name">
+                    <Form.Item label="Số dư tối thiểu" name="minBalance">
                         <Input />
                     </Form.Item>
-                    <Form.Item label="CMT" name="card_id">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item label="Ngày sinh" name="birthday">
-                        <DatePicker />
-                    </Form.Item>
-
-                    <Form.Item label="Số năm kinh nghiệm" name="exp_year">
-                        <InputNumber />
-                    </Form.Item>
-
-                    <Form.Item label="Bậc nghề" name="rate">
-                        <Select>
-                            <Select.Option value="low">Thấp</Select.Option>
-                            <Select.Option value="mid">Trung bình</Select.Option>
-                            <Select.Option value="high">Cao</Select.Option>
-                        </Select>
-                    </Form.Item>
-
-                    <Form.Item label="Vị trí công việc" name="position">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item label="Địa chỉ" name="address">
-                        <Input />
-                    </Form.Item>
-
                     <Button key="back" onClick={handleCancel}>
                         Huỷ
                     </Button>

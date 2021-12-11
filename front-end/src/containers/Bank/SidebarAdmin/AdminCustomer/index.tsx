@@ -1,14 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import { ToggleSidebarContext } from "src/common/context/ToggleSidebarContext";
 import { ThemeContext } from "styled-components";
 import { SInnerSidebar } from "./styles";
-import { Table, Tag, Space, Form, Input, Button, Radio } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { requestToken } from "src/api/axios";
 import { Drawer, List, Avatar, Divider, Col, Row } from 'antd';
-import CreateStaff from "./CreateStaff";
-import EditStaff from "./EditStaff";
 import { clearParams } from "src/common/helper";
+import EditCustomer from "./EditCustomer";
 
 export default function AdminCustomer() {
   const { theme } = useContext(ThemeContext);
@@ -34,6 +33,7 @@ export default function AdminCustomer() {
 
   // tao nhan vien 
   const [modal, setModal] = useState(false)
+
   return (
     <SInnerSidebar>
       <div className="top">
@@ -47,20 +47,20 @@ export default function AdminCustomer() {
       </div>
       <Divider />
 
-      <div className="search">
+      {/* <div className="search">
         <h3>Tìm kiếm </h3>
         <FormSearch onSearch={setSearch} />
       </div>
-      <Divider />
+      <Divider /> */}
 
-      <div className="handle">
+      {/* <div className="handle">
         <Button type="primary" onClick={() => setModal(!modal)} >Thêm mới</Button>
         <CreateStaff open={modal} setOpen={setModal} callback = {() => {mustReload()}} />
       </div>
-      <Divider />
+      <Divider /> */}
 
       <div className="body">
-        <h3>Bảng danh sách Nhân viên</h3>
+        <h3>Bảng danh sách Khách hàng</h3>
         <ListData data={state?.data ?? []} />
       </div>
     </SInnerSidebar>
@@ -75,11 +75,11 @@ const FormSearch = ({onSearch} : any) => {
       layout={"inline"}
       form={form}
       onFinish={(data) => {
-        console.log("data", data);
+        //console.log("data", data);
         onSearch(data);
       }}
     >
-      <Form.Item label="Tên nhân viên" name="name">
+      <Form.Item label="Tên Khách hàng" name="name">
         <Input placeholder="Nhập..." />
       </Form.Item>
       <Form.Item >
@@ -102,7 +102,7 @@ const ListData = ({ data }: any) => {
   const [staff, setStaff] = useState<any>();
 
   const showDrawer = (id: any) => {
-    requestToken({ method: "GET", url: `/staff?id=${id}` }).then((res: any) => {
+    requestToken({ method: "GET", url: `/customer?id=${id}` }).then((res: any) => {
       setState({
         visible: true,
       });
@@ -116,6 +116,7 @@ const ListData = ({ data }: any) => {
       visible: false,
     });
   };
+
   // update stafff 
   const [update, setUpdate] = useState(0);
 
@@ -155,12 +156,12 @@ const ListData = ({ data }: any) => {
         onClose={onClose}
         visible={state.visible}
       >
-        <p className="site-description-item-profile-p" style={{ marginBottom: 24 }}>
-          Thông tin nhân viên
-        </p>
+        <h3 className="site-description-item-profile-p" style={{ marginBottom: 24 }}>
+          Thông tin Khách hàng
+        </h3>
         <Row>
           <Col span={12}>
-            <DescriptionItem title="Mã nhân viên" content={staff.id} />
+            <DescriptionItem title="Mã Khách hàng" content={staff.id} />
           </Col>
           <Col span={12}>
             <DescriptionItem title="CMT" content={staff.card_id} />
@@ -185,29 +186,20 @@ const ListData = ({ data }: any) => {
           </Col>
         </Row>
         <Divider />
-
         <Row>
           <Col span={12}>
-            <DescriptionItem title="Bậc nghề" content={staff.rate} />
+            <DescriptionItem title="Tạo bởi Nhân viên" content={staff.staff.name} />
           </Col>
           <Col span={12}>
-            <DescriptionItem title="Thâm niên" content={staff.expYear} />
+            <DescriptionItem title="Ngày tham gia" content={new Date(staff.createdAt).toLocaleDateString()} />
           </Col>
         </Row>
         <Divider />
-        <Row>
-          <Col span={12}>
-            <DescriptionItem title="Vị trí công việc" content={staff.position} />
-          </Col>
-          {/* <Col span={12}>
-            <DescriptionItem title="Thâm niên" content={staff.birthday} />
-          </Col> */}
-        </Row>
-        <Divider />
+        <h3>Danh sách Tài khoản</h3>
 
       </Drawer>}
 
-      {update ? <EditStaff open={update} setOpen={setUpdate} /> : ""}
+      {update ? <EditCustomer open={update} setOpen={setUpdate} /> : ""}
 
     </>
   );
