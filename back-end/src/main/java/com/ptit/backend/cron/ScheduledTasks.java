@@ -20,8 +20,7 @@ public class ScheduledTasks {
     @Autowired
     AccountRepository accountRepository;
 
-    @Scheduled(cron = "0 0 0 ? * * *")
-    @Transactional
+    @Scheduled(cron = "0 0 0 ? * *")
     public void scheduleTaskWithCronExpression() {
         // get all account
         List<AccountEntity> accountEntityList = accountRepository.findAll();
