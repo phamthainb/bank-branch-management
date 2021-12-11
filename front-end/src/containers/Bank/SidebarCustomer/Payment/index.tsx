@@ -55,6 +55,12 @@ export default function Payment() {
         icon: "error",
       });
     }
+    else if(Number(values.amount)===0){
+      Alert({
+        name: "Tài khoản không đủ!",
+        icon: "error",
+      });
+    }
     else if (accountTarget !== null) {
       requestToken({
         method: "POST",
@@ -129,13 +135,17 @@ export default function Payment() {
             rules={[{ required: true, message: "Cannot be empty!" }]}
           >
             <Select
-              placeholder="Select a option and change input text above"
+              placeholder="Select an account"
               allowClear
               onChange={(value) => {
                 for (let i in listAccount) {
                   if (value === listAccount[i].id) {
                     setAccountSource(listAccount[i]);
                     console.log(listAccount[i]);
+                    formRef.current!.setFieldsValue({
+                      type: undefined,
+                      available:''
+                    });
                     break;
                   }
                 }

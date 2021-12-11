@@ -77,7 +77,7 @@ export default function UpdateProfile() {
           onFinish={onFinish}
           initialValues ={{
             name: customer?.name,
-            birthday: new Date(customer?.birthday)||null,
+            birthday: moment(customer?.birthday)||null,
             card_id: customer?.card_id,
             address: customer?.address,
           }}
