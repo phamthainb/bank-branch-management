@@ -109,7 +109,7 @@ public class AccountServiceImpl implements AccountService {
             transactionEntity.setAccount_in(account);
             transactionEntity.setAmount(data.getAmount());
             transactionEntity.setType(TransactionEntity.type.IN);
-            transactionEntity.setNote("Nạp tiền " + data.getAmount());
+            transactionEntity.setNote("Nạp tiền " + String.valueOf(data.getAmount()));
 
             transactionRepository.save(transactionEntity);
             return true;

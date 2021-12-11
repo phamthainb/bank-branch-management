@@ -7,7 +7,6 @@ import { ToggleSidebarContext } from "src/common/context/ToggleSidebarContext";
 import AdminCustomer from "./AdminCustomer";
 import AdminPackage from "./AdminPackage";
 import AdminStaff from "./AdminStaff";
-import Accountmanagement from "./AdminStaff";
 import AdminTransaction from "./AdminTransaction";
 import { SSidebar } from "./styles";
 
@@ -31,7 +30,7 @@ export default function SidebarAdmin() {
       )}
       <SSidebar open={open}>
         <Switch>
-        <Route path={`${router.path}/staff`} >
+        <Route path={`${router.path}`} exact >
           <AdminStaff />
         </Route>
         <Route path={`${router.path}/customer`} >

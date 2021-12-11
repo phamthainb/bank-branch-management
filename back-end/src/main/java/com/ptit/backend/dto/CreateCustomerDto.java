@@ -11,7 +11,7 @@ public class CreateCustomerDto {
     private String birthday;
     private String card_id;
     private String name;
-    private Boolean status;
+    //private Boolean status;
 
     // user
     private String username;

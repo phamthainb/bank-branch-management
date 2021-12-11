@@ -1,17 +1,16 @@
 package com.ptit.backend.controller;
 
 import com.ptit.backend.dto.CreateStaffDto;
-import com.ptit.backend.dto.GetSalaryDto;
 import com.ptit.backend.dto.MyUserDetails;
 import com.ptit.backend.dto.ResSalaryDto;
 import com.ptit.backend.entity.AdminEntity;
 import com.ptit.backend.entity.CustomerEntity;
-import com.ptit.backend.repository.StaffRepository;
-import com.ptit.backend.utils.ResponseObject;
 import com.ptit.backend.entity.StaffEntity;
 import com.ptit.backend.entity.UserEntity;
+import com.ptit.backend.repository.StaffRepository;
 import com.ptit.backend.service.StaffService;
 import com.ptit.backend.service.UserService;
+import com.ptit.backend.utils.ResponseObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,9 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/staff")
@@ -62,8 +59,8 @@ public class StaffController {
         staffEntity.setRate(createStaffDto.getRate());
         staffEntity.setPosition(createStaffDto.getPosition());
 
-        AdminEntity adminEntity = new AdminEntity();
-        adminEntity.setUser(myUserDetails.getUser());
+        // check admin
+        AdminEntity adminEntity = (AdminEntity) userService.getProfile(myUserDetails.getUser());
 
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(createStaffDto.getUsername());
@@ -77,7 +74,6 @@ public class StaffController {
         if(newStaff != null){
             return ResponseObject.builder().status(HttpStatus.CREATED).message("Tạo nhân viên thành công.").data(newStaff).build();
         }
-
         return ResponseObject.builder().status(HttpStatus.NOT_IMPLEMENTED).message("Tạo nhân viên thất bại.").build();
     }
 
