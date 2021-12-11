@@ -6,6 +6,7 @@ import { CustomerContext } from "src/common/context/CustomerContext";
 import { ToggleSidebarContext } from "src/common/context/ToggleSidebarContext";
 import { ThemeContext } from "styled-components";
 import AddPackage from "./AddPackage";
+import RechargePackage from "./RechargePackage";
 import { SInnerSidebar } from "./styles";
 
 interface ITable {
@@ -20,10 +21,15 @@ export default function Accountmanagement() {
   const { toggleSidebar } = useContext(ToggleSidebarContext);
   const { setCustomer } = useContext(CustomerContext);
   const [dataSource, setDataSource] = useState<ITable[]>([]);
+  const [reload, setreload] = useState(true);
   
+  const musReload = () => {
+    setreload(!reload);
+  }
   // modal
   const [currentAccount, setCurrentAccount] = useState();
   const [modalDkPackage, setModalDK] = useState(false);
+  const [modalnapPackage, setModalnap] = useState(false);
 
   const columns = [
     {
@@ -42,7 +48,7 @@ export default function Accountmanagement() {
       key: "package",
       render: (text: string, record: any) => {
         //console.log("record", record);
-        return record?.apackage?.name ?? "Chưa đăng ký gói tài khoản."
+        return record?.apackage ? `${record?.apackage?.name} - ${record?.apackage?.apr}%/năm` : "Chưa đăng ký gói tài khoản."
       }
     },
     {
@@ -68,7 +74,10 @@ export default function Accountmanagement() {
           {record.apackage ? <>
             <Button>Huỷ gói </Button>  
             <Button>Rút lãi </Button>
-            <Button>Nạp thêm tiền tiết kiệm </Button>
+            <Button onClick={() => {
+            setCurrentAccount(record);
+            setModalnap(true);
+          }} >Nạp thêm tiền tiết kiệm </Button>
           </> : 
           <Button onClick={() => {
             setCurrentAccount(record);
@@ -118,7 +127,8 @@ export default function Accountmanagement() {
       .catch((err: any) => {
         console.log("err: ", err);
       });
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reload]);
 
   return (
     <SInnerSidebar>
@@ -135,8 +145,13 @@ export default function Accountmanagement() {
         <Table dataSource={dataSource} columns={columns} />
       </div>
     {
-      modalDkPackage && <AddPackage open={modalDkPackage} setOpen={setModalDK} callback={() => {
-        
+      modalDkPackage && <AddPackage data={currentAccount} open={modalDkPackage} setOpen={setModalDK} callback={() => {
+        musReload()
+      }} />
+    }
+    {
+      modalnapPackage && <RechargePackage data={currentAccount} open={modalnapPackage} setOpen={setModalnap} callback={() => {
+        musReload()
       }} />
     }
     </SInnerSidebar>
