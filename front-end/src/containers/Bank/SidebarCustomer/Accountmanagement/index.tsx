@@ -1,10 +1,11 @@
-import { Table } from "antd";
+import { Button, Table } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import { requestToken } from "src/api/axios";
 import { CustomerContext } from "src/common/context/CustomerContext";
 import { ToggleSidebarContext } from "src/common/context/ToggleSidebarContext";
 import { ThemeContext } from "styled-components";
+import AddPackage from "./AddPackage";
 import { SInnerSidebar } from "./styles";
 
 interface ITable {
@@ -19,20 +20,10 @@ export default function Accountmanagement() {
   const { toggleSidebar } = useContext(ToggleSidebarContext);
   const { setCustomer } = useContext(CustomerContext);
   const [dataSource, setDataSource] = useState<ITable[]>([]);
-  // const dataSource = [
-  //   {
-  //     key: "1",
-  //     name: "Mike",
-  //     age: 32,
-  //     address: "10 Downing Street",
-  //   },
-  //   {
-  //     key: "2",
-  //     name: "John",
-  //     age: 42,
-  //     address: "10 Downing Street",
-  //   },
-  // ];
+  
+  // modal
+  const [currentAccount, setCurrentAccount] = useState();
+  const [modalDkPackage, setModalDK] = useState(false);
 
   const columns = [
     {
@@ -46,10 +37,47 @@ export default function Accountmanagement() {
       key: "balance",
     },
     {
+      title: "Gói tài khoản",
+      dataIndex: "package",
+      key: "package",
+      render: (text: string, record: any) => {
+        //console.log("record", record);
+        return record?.apackage?.name ?? "Chưa đăng ký gói tài khoản."
+      }
+    },
+    {
       title: "Số dư tiết kiệm",
       dataIndex: "saving",
       key: "saving",
     },
+    {
+      title: "Tiền lãi tiết kiệm",
+      dataIndex: "balance_interest",
+      key: "balance_interest",
+      render: (text: string, record: any) => {
+        //console.log("record", record);
+        return record?.balance_interest ?? "0"
+      }
+    },
+    {
+      title: "Chức năng",
+      dataIndex: "handle",
+      key: "hanlde",
+      render: (text: string, record: any) => {
+        return <>
+          {record.apackage ? <>
+            <Button>Huỷ gói </Button>  
+            <Button>Rút lãi </Button>
+            <Button>Nạp thêm tiền tiết kiệm </Button>
+          </> : 
+          <Button onClick={() => {
+            setCurrentAccount(record);
+            setModalDK(true);
+          }} >Đăng ký gói </Button>}
+        </>
+      }
+    },
+
   ];
   useEffect(() => {
     requestToken({
@@ -68,6 +96,7 @@ export default function Accountmanagement() {
             const tempList: ITable[] = [];
             res.data.data.content.map((item: any, key: any) => {
               let rowItem = {
+                ...item,
                 key: key,
                 code: item.code,
                 balance: item.balance,
@@ -105,6 +134,11 @@ export default function Accountmanagement() {
       <div className="table-container">
         <Table dataSource={dataSource} columns={columns} />
       </div>
+    {
+      modalDkPackage && <AddPackage open={modalDkPackage} setOpen={setModalDK} callback={() => {
+        
+      }} />
+    }
     </SInnerSidebar>
   );
 }
