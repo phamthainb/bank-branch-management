@@ -73,7 +73,7 @@ export default function Accountmanagement() {
         <div className="body">
           <h3>Danh sách tài khoản</h3>
 
-          <ListData data={state?.data ?? []} />
+          <ListData data={state?.data ?? []} mustReload={mustReload} />
         </div>
       </SInnerSidebar>
     </WrapContent>

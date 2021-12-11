@@ -8,6 +8,7 @@ import {
   Switch,
 } from 'antd';
 import { request, requestToken } from 'src/api/axios';
+import { Alert } from 'src/common/components/Alert';
 
 export default function CreateCustomer({ callback }: any) {
   const [state, setState] = useState<any>({
@@ -45,6 +46,11 @@ export default function CreateCustomer({ callback }: any) {
     }).then((res) => {
       // console.log("res: ", res);
       setState({ visible: false });
+      if (res.data.status === "OK") {
+        Alert({ name: res.data.message, icon: "success" })
+      } else {
+        Alert({ name: res.data.message, icon: "info" })
+      }
       callback()
     }).catch((err) => {
       // console.log("err: ", err);

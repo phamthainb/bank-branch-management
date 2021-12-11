@@ -9,6 +9,7 @@ import {
 } from 'antd';
 import { request, requestToken } from 'src/api/axios';
 import moment from 'moment';
+import { Alert } from 'src/common/components/Alert';
 
 export default function EditCustomer({ item, callback }: any) {
   const [state, setState] = useState<any>({
@@ -54,6 +55,11 @@ export default function EditCustomer({ item, callback }: any) {
       },
     }).then((res) => {
       setState({ visible: false });
+      if (res.data.status === "OK") {
+        Alert({ name: res.data.message, icon: "success" })
+      } else {
+        Alert({ name: res.data.message, icon: "info" })
+      }
       callback()
     }).catch((err) => {
     })

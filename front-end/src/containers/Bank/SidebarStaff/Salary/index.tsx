@@ -14,15 +14,14 @@ export default function Salary() {
   const { theme } = useContext(ThemeContext);
   const { data } = useContext(ProfileContext);
   const [state, setstate] = useState<any>();
-  // console.log("state?.data: ", state);
+  const [totalSalary, settotalSalary] = useState<any>();
+  console.log("totalSalary ", totalSalary);
 
   const date = new Date();
   const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
   const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-
   const [search, setSearch] = useState<any>({});
-
 
   useEffect(() => {
     if (data) {
@@ -37,6 +36,7 @@ export default function Salary() {
           }
         }).then((res) => {
           setstate(res?.data?.data?.list)
+          settotalSalary(res?.data?.data?.salary)
         }).catch()
       } else {
         requestToken({
@@ -49,6 +49,7 @@ export default function Salary() {
           }
         }).then((res) => {
           setstate(res?.data?.data?.list)
+          settotalSalary(res?.data?.data?.salary)
         }).catch()
       }
     }
@@ -71,6 +72,10 @@ export default function Salary() {
           <h3>Xem lương từ ngày - đến ngày</h3>
           <FormLayoutDemo setSearch={setSearch} />
         </div>
+        <Divider />
+
+        <h3>Tổng lương của nhân viên: {totalSalary}</h3>
+
         <Divider />
 
         <div className="body">
@@ -126,15 +131,6 @@ const ListData = ({ data }: any) => {
     setState({
       visible: false,
     });
-  };
-
-  const [salary, setSalary] = useState<any>();
-  console.log("data: ", data);
-
-  const showDrawer = (item: any) => {
-    console.log("item: ", item);
-    setSalary(item);
-    console.log("salary: ", salary);
   };
 
   return (
